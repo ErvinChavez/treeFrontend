@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client"; //GraphQL query tag
-import client from "@/lib/apollo"; //apollo client bridge
+import { createApolloClient } from "../lib/apollo";
 
 //define the GraphQL query
 //this fetches the services data from the backend
@@ -35,6 +35,8 @@ export default function Services({ services }) {
 //getStaticProps runs at build time
 //it fetches the data from the backend and passes it to the component as props
 export async function getStaticProps() {
+  const client = createApolloClient();
+
   try {
     //apollo client executes the query
     const { data } = await client.query({
@@ -45,7 +47,7 @@ export async function getStaticProps() {
         services: data.services, //pass data to the component above
       },
       //rebuild page every 1 hour to fetch fresh data
-      revalidate: 3600,
+      revalidate: 60,
     };
   } catch (error) {
     console.error("GraphQL Error:", error);

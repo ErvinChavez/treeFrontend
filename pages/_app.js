@@ -4,7 +4,7 @@ import { ApolloProvider } from '@apollo/client/react'; //the wrapper component
 import client from "../lib/apollo"; //the bridge with apollo.js
 
 
-export default function MyApp({ Component, pageProps }) {
+export default function App({ Component, pageProps }) {
   return (
     //Wrap the entire app in the ApolloProvider
     //This causes the client connection to every single page and component in your project
