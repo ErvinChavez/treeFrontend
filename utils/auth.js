@@ -12,3 +12,9 @@ export const getToken = () => {
 export const removeToken = () => {
     localStorage.removeItem("token");
 };
+
+//check if logged in
+export const isAuthenticated = () => {
+    if (typeof window === "undefined") return false;
+    return !!localStorage.getItem("token");
+};
