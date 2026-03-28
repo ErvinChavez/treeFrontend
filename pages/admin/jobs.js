@@ -36,9 +36,11 @@ export default function Jobs() {
         }
     }, []);
 
-    const { data, loading, error } = useQuery(GET_JOBS);
+    const { data, loading, error } = useQuery(GET_JOBS, {
+      skip: !isAuthenticated,
+    });
 
-    if (loading) return <p className="p-6">Loading jobs...</p>;
+    if (!isAuthenticated || loading) return <p className="p-6">Loading jobs...</p>;
     if (error) return <p className="p-6">Error loading jobs</p>;
 
     return (
@@ -46,7 +48,7 @@ export default function Jobs() {
           <h1 className="text-3xl font-bold mb-4">Jobs</h1>
 
           <div className="grid gap-4">
-            {data.jobs.math((job) => (
+            {data.jobs.map((job) => (
                 <div key={job.id} className="border p-4 rounded shadow">
 
                     <p className="font-semibold">Status: {job.status}</p>
@@ -58,23 +60,17 @@ export default function Jobs() {
                     </div>
 
                     <div className="mt-2">
-                        <p className="font=semibold">Services:</p>
+                        <p className="font-semibold">Services:</p>
                         <ul className="list-disc ml-5">
-                             {job.services.map((service)) => (
-                                <li key={service id}> {service.className}</li>
-                             )
-                            constructor(parameters) {
-                                
-                            }
-                        }>
-
+                             {job.services.map((service) => (
+                                <li key={service.id}>{service.name}</li>
+                             ))}
                         </ul>
                     </div>
-
                 </div>
             ))}
 
           </div>
         </div>
-    )
+    );
 }
