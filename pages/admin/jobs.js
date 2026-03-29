@@ -1,7 +1,7 @@
+import { gql } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import  { useRouter } from  "next/router";
-import { gql } from "@apollo/client";
-import { useMutation, useQuery } from "@apollo/client/react";
 import { isAuthenticated } from "@/utils/auth";
 
 
@@ -72,19 +72,27 @@ export default function Jobs() {
         if (!isAuthenticated()) {
             router.push("/admin/login");
         }
-    }, []);
+    }, [router]);
 
     //Queries
     const { data, loading, error } = useQuery(GET_JOBS);
     const { data: empData } = useQuery(GET_EMPLOYEES);
 
     //local State
-    const [selectedEmployees, setSelectedEmployess] = useState({});
+    const [selectedEmployees, setSelectedEmployees] = useState({});
     
     //sync backend . local state
     useEffect(()=> {
-      
-    })
+      if (data?.jobs) {
+        const initial = {};
+
+        data.jobs.forEach((job) => {
+          initial[job.id] = job.employees?.map((e) => Number(e.id)) || [];
+        });
+
+        setSelectedEmployees(initial);
+      }
+    }, [data]);
 
     //Mutations
     const [updateStatus] = useMutation(UPDATE_JOB_STATUS, {
@@ -92,22 +100,23 @@ export default function Jobs() {
     });
 
     const [assignEmployees] = useMutation(ASSIGN_EMPLOYEES, {
-      refetchQueries: [{query: GET_EMPLOYEES}],
-    })
+      refetchQueries: [{query: GET_JOBS}],
+    });
 
     //UI States
-    if (!isAuthenticated || loading) return <p className="p-6">Loading jobs...</p>;
-    if (error) return <p className="p-6">Error loading jobs</p>;
+    if (loading) return <p className="p-6">Loading jobs...</p>;
+    if (!isAuthenticated()) return null;
+    if (error) return <p className="p-6 text-red-500">Error loading jobs</p>;
 
     return (
         <div className="p-6">
           <h1 className="text-3xl font-bold mb-4">Jobs</h1>
 
           <div className="grid gap-4">
-            {data.jobs.map((job) => (
+            {data?.jobs?.map((job) => (
                 <div key={job.id} className="border p-4 rounded shadow">
 
-                  //Status Dropdown
+                  {/* Status Dropdown */}
                     <div className="mt-2">
                       <strong>Status:</strong>
 
@@ -133,51 +142,52 @@ export default function Jobs() {
                       </select>
                     </div>
                     
-                  //Client Info
+                  {/* Client Info */}
                     <div className="mt-2">
                         <p><strong>Client:</strong> {job.client?.name}</p>
                         <p>{job.client?.email}</p>
                         <p>{job.client?.phone}</p>
                     </div>
 
-                  //Services
+                  {/* Services */}
                     <div className="mt-2">
                         <p className="font-semibold">Services:</p>
                         <ul className="list-disc ml-5">
-                             {job.services.map((service) => (
+                             {job.services?.map((service) => (
                                 <li key={service.id}>{service.name}</li>
                              ))}
                         </ul>
                     </div>
 
-                    //Assign Employees
+                    {/* Assign Employees */}
                     <div className="mt-3">
-                      <p className="font-semibond">Assign Employees:</p>
+                      <p className="font-semibold">Assign Employees:</p>
 
-                      {empData?.employees.map((emp) => {
-                        const isAssigned = job.employees.some(
-                          (e) => e.id === emp.id
-                        );
-
-                        return (
+                      {empData?.employees?.map((emp) => (
                           <label key={emp.id} className="block">
                             <input
                               type="checkbox"
-                              checked={isAssigned}
+                              checked={
+                                selectedEmployees[job.id]?.includes(Number(emp.id)) || false
+                              }
                               onChange={() => {
+                                const current = selectedEmployees[job.id] || [];
+
                                 let updated;
 
-                                if (isAssigned) {
-                                  updated = job.employees
-                                    .filter((e) => e.id !== emp.id)
-                                    .map((e) => Number(e.id));
+                                if (current.includes(Number(emp.id))) {
+                                  updated = current.filter((id) => id !== Number(emp.id));
                                 } else {
-                                  updated = [
-                                    ...job.employees.map((e) => Number(e.id)),
-                                    Number(emp.id),
-                                  ];
+                                  updated = [...current, Number(emp.id)];
                                 }
 
+                                // Update UI instantly
+                                setSelectedEmployees((prev) => ({
+                                  ...prev,
+                                  [job.id]: updated,
+                                }));
+
+                                // sync backend
                                 assignEmployees({
                                   variables: {
                                     jobId: Number(job.id),
@@ -189,13 +199,11 @@ export default function Jobs() {
 
                             <span className="ml-2">{emp.name}</span>
                           </label>
-                        );
-                      })}
+                      ))}
                     </div>
 
                 </div>
             ))}
-
           </div>
         </div>
     );
