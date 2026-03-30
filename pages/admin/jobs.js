@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import  { useRouter } from  "next/router";
 import { isAuthenticated } from "@/utils/auth";
+import PhotoUpload from "@/components/forms/PhotoUpload";
 
 
 //GraphQL query
@@ -12,11 +13,11 @@ const GET_JOBS = gql`
       id
       status
       createdAt
-      client {
-        name
-        email
-        phone
-      }
+      scheduledDate
+      street
+      city
+      state
+      zip
       services {
         id
         name
@@ -24,6 +25,12 @@ const GET_JOBS = gql`
       employees {
         id
         name
+      }
+      photos
+      feedback {
+        rating
+        comment
+        googleReviewLink
       }
     }
   }
@@ -60,6 +67,14 @@ const ASSIGN_EMPLOYEES = gql`
   }
 `;
 
+// //attach photos to Job
+// mutation AttachPhotosToJob($jobId: Int!, $photoUrls: [String]) {
+//   attachPhotosToJob(jobId: $jobId, photoUrls: $photoUrls) {
+//     id
+//     photos
+//   }
+// }
+
 //format status strings for display
 const formatStatus = (status) =>
   status.replaceAll("_"," ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -75,7 +90,7 @@ export default function Jobs() {
     }, [router]);
 
     //Queries
-    const { data, loading, error } = useQuery(GET_JOBS);
+    const { data, loading, error, refetch } = useQuery(GET_JOBS);
     const { data: empData } = useQuery(GET_EMPLOYEES);
 
     //local State
@@ -159,7 +174,34 @@ export default function Jobs() {
                         </ul>
                     </div>
 
-                    {/* Assign Employees */}
+                  {/* Photos */}
+                  <div className="mt-3">
+                    <p className="font-semibold">Photos:</p>
+
+                    <div className="flex gap-2 overflow-xauto mt-2">
+                      {job.photos?.map((url, i) => (
+                        <img
+                          key={i}
+                          src={url}
+                          alt="Job"
+                          className="h-24 w-24 object-cover rounded border"
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Upload Photos */}
+                  <div className="mt-3">
+                      <p className="font-semibold">Upload Before/After Photos:</p>
+
+                      <div className="flex gap-4 mt-2">
+                        <PhotoUpload jobId={job.id} type= "before" onUpload={() => refetch()}/>
+                        <PhotoUpload jobId={job.id} type= "after" onUpload={() => refetch()}/>
+
+                      </div>
+                  </div>
+
+                  {/* Assign Employees */}
                     <div className="mt-3">
                       <p className="font-semibold">Assign Employees:</p>
 

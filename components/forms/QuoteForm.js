@@ -62,12 +62,12 @@ export default function QuoteForm({ services }) {
     const handleServiceChange = (id) => {
         const numId = Number(id);
         setForm((prev) => {
-            const exists = prev.serviceIds.includes(id);
+            const exists = prev.serviceIds.includes(numId);
             return {
                 ...prev,
                 serviceIds: exists
-                  ? prev.serviceIds.filter((s) => s !== id)
-                  : [...prev.serviceIds, id],
+                  ? prev.serviceIds.filter((s) => s !== numId)
+                  : [...prev.serviceIds, numId],
             };
         });
     };
@@ -89,7 +89,7 @@ export default function QuoteForm({ services }) {
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             /** Client Info */
-            <input name="clientName" placeholder="Name" onChange={handleChange} className="input"/>
+            <input name="clientName" placeholder="Name" value={form.clientName} onChange={handleChange} className="input"/>
             <input name="clientEmail" placeholder="Email" onChange={handleChange} className="input"/>
             <input name="clientPhone" placeholder="Phone" onChange={handleChange} className="input"/>
 
