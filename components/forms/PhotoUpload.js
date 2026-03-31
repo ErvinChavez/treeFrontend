@@ -6,7 +6,7 @@ export default function PhotoUpload({ jobId, type, onUpload }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const handeleFileChange = (e) => {
+    const handleFileChange = (e) => {
         setFile(e.target.files[0]);
         setError('');
     };
@@ -39,7 +39,7 @@ export default function PhotoUpload({ jobId, type, onUpload }) {
 
     return (
         <div>
-            <input type="file" accept="image/*" onChange={handeleFileChange} />
+            <input type="file" accept="image/*" onChange={handleFileChange} />
             {error && <span className="text-red-500">{error}</span>}
             <button
                 onClick={handleUpload}

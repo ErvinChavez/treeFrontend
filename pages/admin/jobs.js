@@ -194,7 +194,7 @@ export default function Jobs() {
                   <div className="mt-3">
                     <p className="font-semibold">Photos:</p>
 
-                    <div className="flex gap-2 overflow-xauto mt-2">
+                    <div className="flex gap-2 overflow-x-auto mt-2">
                       {job.photos?.map((url, i) => (
                         <img
                           key={i}

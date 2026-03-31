@@ -50,11 +50,6 @@ export default function AdminDashboard() {
                     <p className="text-gray-500">Total Clients</p>
                     <p className="text-2xl font-bold">{data.totalClients}</p>
                 </div>
-
-                <div className="p-4 bg-white shadow rounded">
-                    <p className="text-gray-500">Total Clients</p>
-                    <p className="text-2xl font-bold">{data.totalClients}</p>
-                </div>
                
                 <div className="p-4 bg-white shadow rounded">
                     <p className="text-gray-500">Avg Rating</p>
@@ -64,13 +59,26 @@ export default function AdminDashboard() {
                 <div className="p-4 bg-white shadow rounded">
                     <p className="text-gray-500">Active Jobs</p>
                     <p className="text-2xl font-bold">
-                        {data.jobsNyStatus.find(s => s.status === "in_progress")?.count}
+                        {data.jobsByStatus.find(s => s.status === "in_progress")?.count}
                     </p>
                 </div>
             </div>
 
             {/* Jobs by Status */}
-            
-        </div>
+            <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-4">Jobs by Status</h2>
+
+                <div className="space-y-2">
+                    {data.jobsByStatus.map((item) => (
+                        <div key={item.status} className="flex justify-between border p-2 rounded">
+                            <span className="capitalize">
+                                {item.status.replaceAll("_", " ")}
+                            </span>
+                            <span className="font-bold">{item.count}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+    </div>
     );
 }
