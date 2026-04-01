@@ -88,18 +88,18 @@ export default function QuoteForm({ services }) {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            /** Client Info */
+            {/* Client Info */}
             <input name="clientName" placeholder="Name" value={form.clientName} onChange={handleChange} className="input"/>
             <input name="clientEmail" placeholder="Email" onChange={handleChange} className="input"/>
             <input name="clientPhone" placeholder="Phone" onChange={handleChange} className="input"/>
 
-            /** Address */
+            {/* Address */}
             <input name="street" placeholder="Street" onChange={handleChange} className="input"/>
             <input name="city" placeholder="City" onChange={handleChange} className="input"/>
             <input name="state" placeholder="State" onChange={handleChange} className="input"/>
             <input name="zip" placeholder="ZIP" onChange={handleChange} className="input"/>
 
-            /** Services */
+            {/* Services */}
             <div>
                 <p className="font-semibold mb-2">Select Services:</p>
                 {services.map((service) => (
