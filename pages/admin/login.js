@@ -3,13 +3,7 @@ import { useRouter } from "next/router";
 import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
 import { setToken } from "@/utils/auth";
-
-//GraphQL mutation
-const LOGIN_ADMIN = gql`
-  mutation LoginAdmin($email: String!, $password: String!) {
-    loginAdmin(email: $email, password: $password)
-  }
-`;
+import { LOGIN_ADMIN } from "@/lib/graphql/mutations/auth";
 
 export default function Login() {
     const [form, setForm] = useState({ email: "", password: "" });

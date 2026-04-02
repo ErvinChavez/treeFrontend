@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import  { useRouter } from  "next/router";
@@ -6,22 +5,19 @@ import { isAuthenticated } from "@/utils/auth";
 
 import AdminLayout from "@/components/layout/AdminLayout";
 import JobCard from "@/components/cards/JobCard";
-import { GET_JOBS, GET_EMPLOYEES } from "@/lib/graphql/queries/jobs";
+
+import { GET_JOBS} from "@/lib/graphql/queries/jobs";
+import { GET_EMPLOYEES } from "@/lib/graphql/queries/employees";
+
 import {
   UPDATE_JOB_STATUS,
   ASSIGN_EMPLOYEES,
   SUBMIT_FEEDBACK
 } from "@/lib/graphql/mutations/jobs";
-import { GET_EMPLOYEES } from "@/lib/graphql/queries/employees";
-import { CREATE_EMPLOYEE } from "@/lib/graphql/mutations/employees";
-
-//format status strings for display
-const formatStatus = (status) =>
-  status.replaceAll("_"," ").replace(/\b\w/g, (c) => c.toUpperCase());
 
 export default function Jobs() {
   const router = useRouter();
-    
+  
   //protect route
   useEffect(() => {
     if (!isAuthenticated()) {

@@ -1,7 +1,11 @@
+import { formatStatus } from "@/utils/format";
+
 export default function StatusDropdown({job, updateStatus}) {  
     return (
         <div className="mt-2">
-            <strong>Status:</strong>
+            <p className="font-semibold mb-1">
+                Status: {formatStatus(job.status)}
+            </p>
             <select
                 value={job.status}
                 onChange={(e) => 
