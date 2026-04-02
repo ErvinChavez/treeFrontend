@@ -3,20 +3,8 @@ import { useQuery } from "@apollo/client/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { isAuthenticated } from "@/utils/auth";
-
-
-//GraphQL query
-const GET_DASHBOARD = gql`
-    query {
-        totalJobs
-        totalClients
-        averageRating
-        jobsByStatus {
-        status
-        count
-        }
-    }
-`;
+import AdminLayout from "@/components/layout/AdminLayout";
+import { GET_DASHBOARD } from "@/lib/graphql/queries/dashboard";
 
 export default function AdminDashboard() {
     const router = useRouter();
@@ -35,6 +23,7 @@ export default function AdminDashboard() {
     if (error) return <p className="p-6 text-red-500">Error loading dashboard</p>
 
     return (
+        <AdminLayout>
         <div className="p-6">
             <h1 className="text-3xl font bold">Dashboard</h1>
             
@@ -80,5 +69,6 @@ export default function AdminDashboard() {
                 </div>
             </div>
     </div>
+    </AdminLayout>
     );
 }

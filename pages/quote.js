@@ -1,16 +1,7 @@
 import { gql } from "@apollo/client";
 import { createApolloClient } from "@/lib/apollo";
 import QuoteForm from "@/components/forms/QuoteForm";
-
-// GraphQL query to fetch services
-const GET_SERVICES = gql`
-  query {
-    services {
-    id
-    name
-    }
-  }
-`;
+import { GET_SERVICES } from "@/lib/graphql/queries/services";
 
 export default function Quote({ services }) {
   return (

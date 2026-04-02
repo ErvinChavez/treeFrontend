@@ -1,17 +1,7 @@
 import { gql } from "@apollo/client"; //GraphQL query tag
 import { createApolloClient } from "../lib/apollo";
+import { GET_SERVICES } from "@/lib/graphql/queries/services";
 
-//define the GraphQL query
-//this fetches the services data from the backend
-const GET_SERVICES = gql`
-  query {
-    services {
-      id
-      name
-      description
-    }
-  }
-`;
 
 //the component receives `services` as a prop from getStaticProps
 export default function Services({ services }) {
