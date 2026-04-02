@@ -7,28 +7,8 @@ import { isAuthenticated } from "@/utils/auth";
 import AdminLayout from "@/components/layout/AdminLayout";
 import EmployeeCard from "@/components/cards/EmployeeCard";
 import EmployeeForm from "@/components/forms/EmployeeForm";
-
-//Queries
-const GET_EMPLOYEES = gql`
-  query {
-    employees {
-      id
-      name
-      email
-      phone
-    }
-  }
-`;
-
-//Mutation
-const CREATE_EMPLOYEE = gql`
-  mutation CreateEmployee($name: String!, $email: String, $phone: String) {
-    createEmployee(name: $name, email: $email, phone: $phone) {
-      id
-      name
-    }
-  }
-`;
+import { GET_EMPLOYEES } from "@/lib/graphql/queries/employees";
+import { CREATE_EMPLOYEE } from "@/lib/graphql/mutations/employees";
 
 export default function Employees() {
   const router = useRouter();
