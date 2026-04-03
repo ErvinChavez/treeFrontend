@@ -3,11 +3,11 @@ export default function PhotoGallery({ photos }) {
         <div className="mt-3">
             <p className="font-semibold">Photos:</p>
 
-            <div className="fles gap-2 overflow-x-auto mt-2">
+            <div className="flex gap-2 overflow-x-auto mt-2">
                 {photos?.map((url, i) => (
                     <img
                         key={i}
-                        src={url}
+                        src={`http://localhost:5000${url}`}
                         alt="Job"
                         className="h-24 w-24 object-cover rounded border"
                     />
