@@ -1,6 +1,7 @@
 //save token after login
 export const setToken = (token) => {
     localStorage.setItem("token", token);
+    
 };
 
 //get token from requests

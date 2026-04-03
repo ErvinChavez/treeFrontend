@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client"; //GraphQL query tag
 import { createApolloClient } from "../lib/apollo";
 import { GET_SERVICES } from "@/lib/graphql/queries/services";
+import ServiceCard from "@/components/cards/ServiceCard";
 
 
 //the component receives `services` as a prop from getStaticProps
@@ -12,10 +13,7 @@ export default function Services({ services }) {
       {/*Display each service in a grid */}
       <div className="grid gap-4">
         {services.map((service) => (
-          <div key={service.id} className="border p-4 rounded shadow">
-            <h2 className="text-xl font-semibold">{service.name}</h2>
-            <p className="text-gray-600">{service.description}</p>
-          </div>
+          <ServiceCard key={service.id} service={service}/>
         ))}
       </div>
     </div>

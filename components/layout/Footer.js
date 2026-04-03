@@ -1,54 +1,19 @@
-// // components/layout/Footer.js
-// export default function Footer() {
-//   return (
-//     <footer className="bg-gray-100 py-6 mt-12">
-//       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4">
+export default function Footer() {
+  return (
+    <footer className="bg-gray-900 text-white mt-10">
+      <div className="max-w-6xl mx-auto p-6 flex flex-col md:flex-row justify-between items-center">
         
-//         {/* Social links */}
-//         <div className="mb-4 md:mb-0">
-//           <span className="font-semibold mr-2">Follow us on:</span>
-//           <a 
-//             href="https://www.facebook.com/YourPage" 
-//             target="_blank" 
-//             rel="noopener noreferrer"
-//             className="text-blue-600 hover:underline mr-2"
-//           >
-//             Facebook
-//           </a>
-//           <a 
-//             href="https://www.instagram.com/YourPage" 
-//             target="_blank" 
-//             rel="noopener noreferrer"
-//             className="text-pink-500 hover:underline mr-2"
-//           >
-//             Instagram
-//           </a>
-//         </div>
+        <p className="text-sm">
+          © 1998-{new Date().getFullYear()} Chavez Tree Service
+        </p>
 
-//         {/* Google reviews link */}
-//         <div>
-//           <a 
-//             href="https://www.google.com/search?q=Chavez+Tree+Service+reviews" 
-//             target="_blank" 
-//             rel="noopener noreferrer"
-//             className="text-green-600 hover:underline"
-//           >
-//             See our Google Reviews
-//           </a>
-//         </div>
-//       </div>
-//     </footer>
-//   );
-// }
+        <div className="flex gap-4 mt-2 md:mt-0">
+          <a href="/services" className="hover:underline">Services</a>
+          <a href="/quote" className="hover:underline">Get a Quote</a>
+          <a href="/testimonials" className="hover:underline">Testimonials</a>
+        </div>
 
-//ADD TO _app.js :
-// import Footer from "@/components/layout/Footer";
-
-// export default function Layout({ children }) {
-//   return (
-//     <>
-//       {children}
-//       <Footer />
-//     </>
-//   );
-// }
+      </div>
+    </footer>
+  );
+}
