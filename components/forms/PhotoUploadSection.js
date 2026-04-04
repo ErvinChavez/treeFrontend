@@ -6,8 +6,7 @@ export default function PhotoUploadSection({ jobId, refetch }) {
       <p className="font-semibold">Upload Before/After Photos:</p>
 
       <div className="flex gap-4 mt-2">
-        <PhotoUpload jobId={jobId} type="before" onUpload={refetch} />
-        <PhotoUpload jobId={jobId} type="after" onUpload={refetch} />
+        <PhotoUpload jobId={jobId} onUpload={refetch} />
       </div>
     </div>
   );

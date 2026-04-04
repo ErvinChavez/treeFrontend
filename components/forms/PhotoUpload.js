@@ -17,7 +17,7 @@ export default function PhotoUpload({ jobId, type, onUpload }) {
         const formData = new FormData();
         formData.append('photo', file);
         formData.append('jobId', jobId);
-        formData.append('type', type); //'before' or 'after'
+        
 
         setLoading(true);
         try {

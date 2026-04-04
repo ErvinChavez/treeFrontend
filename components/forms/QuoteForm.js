@@ -46,6 +46,16 @@ export default function QuoteForm({ services }) {
     const [createQuote, { loading }] = useMutation(CREATE_QUOTE, {
         onCompleted: () => {
             alert("Quote request submitted!");
+            setForm({
+                clientName: "",
+                clientEmail: "",
+                clientPhone: "",
+                street: "",
+                city: "",
+                state: "",
+                zip: "",
+                serviceIds: [],
+            });
         },
         onError: (err) => {
             console.error("FULL ERROR:", err);
