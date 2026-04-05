@@ -7,7 +7,7 @@ export default function PhotoGallery({ photos }) {
                 {photos?.map((url, i) => (
                     <img
                         key={i}
-                        src={`http://localhost:5000${url}`}
+                        src={`http://localhost:5000/uploads/${url}`}
                         alt="Job"
                         className="h-24 w-24 object-cover rounded border"
                     />
