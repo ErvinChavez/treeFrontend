@@ -1,30 +1,58 @@
 import { useEffect, useState } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { GET_SERVICES, CREATE_SERVICE, UPDATE_SERVICE, DELETE_SERVICE } from "@/lib/graphql/services";
+import { useQuery, useMutation } from "@apollo/client/react";
+import { useRouter } from "next/router";
+import { isAuthenticated } from "@/utils/auth";
+import {
+  GET_SERVICES,
+  CREATE_SERVICE,
+  UPDATE_SERVICE,
+  DELETE_SERVICE,
+} from "@/lib/graphql/queries/services";
 
-export default function AdminServices() {
-  const { data, refetch } = useQuery(GET_SERVICES);
+export default function ServicesAdmin() {
+  const router = useRouter();
+
+  // 🔐 Protect route
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.push("/admin/login");
+    }
+  }, [router]);
+
+  const { data, loading, error, refetch } = useQuery(GET_SERVICES);
+
   const [createService] = useMutation(CREATE_SERVICE);
   const [updateService] = useMutation(UPDATE_SERVICE);
   const [deleteService] = useMutation(DELETE_SERVICE);
 
-  const [newService, setNewService] = useState({ name: "", description: "" });
+  const [newService, setNewService] = useState({
+    name: "",
+    description: "",
+  });
+
   const [editService, setEditService] = useState(null);
 
+  if (loading) return <p className="p-6">Loading services...</p>;
+  if (!isAuthenticated()) return null;
+  if (error) return <p className="p-6 text-red-500">Error loading services</p>;
+
+  // ➕ ADD
   const handleAdd = async () => {
     if (!newService.name) return;
+
     await createService({ variables: newService });
     setNewService({ name: "", description: "" });
     refetch();
   };
 
+  // ✏️ UPDATE
   const handleUpdate = async () => {
-    if (!editService?.name) return;
     await updateService({ variables: editService });
     setEditService(null);
     refetch();
   };
 
+  // ❌ DELETE
   const handleDelete = async (id) => {
     await deleteService({ variables: { id } });
     refetch();
@@ -32,69 +60,108 @@ export default function AdminServices() {
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">Manage Services</h1>
+      <h1 className="text-3xl font-bold mb-6">Manage Services</h1>
 
-      {/* Add new service */}
+      {/* ➕ ADD NEW */}
       <div className="flex gap-2 mb-6">
         <input
-          placeholder="Name"
+          placeholder="Service name"
           value={newService.name}
-          onChange={(e) => setNewService({ ...newService, name: e.target.value })}
+          onChange={(e) =>
+            setNewService({ ...newService, name: e.target.value })
+          }
           className="border p-2 rounded"
         />
         <input
           placeholder="Description"
           value={newService.description}
-          onChange={(e) => setNewService({ ...newService, description: e.target.value })}
+          onChange={(e) =>
+            setNewService({
+              ...newService,
+              description: e.target.value,
+            })
+          }
           className="border p-2 rounded"
         />
-        <button onClick={handleAdd} className="bg-green-500 text-white px-4 rounded">Add</button>
+        <button
+          onClick={handleAdd}
+          className="bg-green-600 text-white px-4 rounded"
+        >
+          Add
+        </button>
       </div>
 
-      {/* Services list */}
-      <table className="w-full border">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="p-2">Name</th>
-            <th className="p-2">Description</th>
-            <th className="p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.services?.map((s) => (
-            <tr key={s.id} className="border-t">
-              <td className="p-2">{s.name}</td>
-              <td className="p-2">{s.description}</td>
-              <td className="p-2 flex gap-2">
-                <button onClick={() => setEditService({ id: s.id, name: s.name, description: s.description })}
-                  className="bg-yellow-400 px-2 rounded">Edit</button>
-                <button onClick={() => handleDelete(s.id)} className="bg-red-500 px-2 rounded text-white">Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* 📋 LIST */}
+      <div className="grid gap-4">
+        {data.services.map((s) => (
+          <div key={s.id} className="border p-4 rounded shadow">
+            <p className="font-bold">{s.name}</p>
+            <p className="text-gray-600">{s.description}</p>
 
-      {/* Edit modal */}
+            <div className="mt-3 flex gap-2">
+              <button
+                onClick={() =>
+                  setEditService({
+                    id: Number(s.id),
+                    name: s.name,
+                    description: s.description,
+                  })
+                }
+                className="bg-yellow-500 px-3 py-1 rounded"
+              >
+                Edit
+              </button>
+
+              <button
+                onClick={() => handleDelete(Number(s.id))}
+                className="bg-red-600 text-white px-3 py-1 rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ✏️ EDIT MODAL */}
       {editService && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded">
-            <h2 className="mb-4">Edit Service</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+          <div className="bg-white p-6 rounded w-96">
+            <h2 className="text-xl mb-4">Edit Service</h2>
+
             <input
-              placeholder="Name"
               value={editService.name}
-              onChange={(e) => setEditService({ ...editService, name: e.target.value })}
-              className="border p-2 rounded mb-2 w-full"
+              onChange={(e) =>
+                setEditService({ ...editService, name: e.target.value })
+              }
+              className="border p-2 rounded w-full mb-2"
             />
+
             <input
-              placeholder="Description"
               value={editService.description}
-              onChange={(e) => setEditService({ ...editService, description: e.target.value })}
-              className="border p-2 rounded mb-4 w-full"
+              onChange={(e) =>
+                setEditService({
+                  ...editService,
+                  description: e.target.value,
+                })
+              }
+              className="border p-2 rounded w-full mb-4"
             />
-            <div className="flex gap-2 justify-end">
-              <button onClick={() => setEditService(null)} className="px-4 py-2 border rounded">Cancel</button>
-              <button onClick={handleUpdate} className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setEditService(null)}
+                className="border px-3 py-1 rounded"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleUpdate}
+                className="bg-blue-600 text-white px-3 py-1 rounded"
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>

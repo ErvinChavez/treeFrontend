@@ -15,6 +15,8 @@ export default function SideBar() {
         <Link href="/admin/employees" className="block hover:bg-gray-700 p-2 rounded">
           Employees
         </Link>
+        <Link href="/admin/services" className="block p-2 hover:bg-gray-200">
+        </Link>
       </nav>
     </div>
   );
