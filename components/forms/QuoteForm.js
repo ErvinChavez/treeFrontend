@@ -100,14 +100,14 @@ export default function QuoteForm({ services }) {
         <form onSubmit={handleSubmit} className="space-y-4">
             {/* Client Info */}
             <input name="clientName" placeholder="Name" value={form.clientName} onChange={handleChange} className="input"/>
-            <input name="clientEmail" placeholder="Email" onChange={handleChange} className="input"/>
-            <input name="clientPhone" placeholder="Phone" onChange={handleChange} className="input"/>
+            <input name="clientEmail" placeholder="Email" value={form.clientEmail} onChange={handleChange} className="input"/>
+            <input name="clientPhone" placeholder="Phone" value={form.clientPhone} onChange={handleChange} className="input"/>
 
             {/* Address */}
-            <input name="street" placeholder="Street" onChange={handleChange} className="input"/>
-            <input name="city" placeholder="City" onChange={handleChange} className="input"/>
-            <input name="state" placeholder="State" onChange={handleChange} className="input"/>
-            <input name="zip" placeholder="ZIP" onChange={handleChange} className="input"/>
+            <input name="street" placeholder="Street" value={form.street} onChange={handleChange} className="input"/>
+            <input name="city" placeholder="City" value={form.city} onChange={handleChange} className="input"/>
+            <input name="state" placeholder="State" value={form.state} onChange={handleChange} className="input"/>
+            <input name="zip" placeholder="ZIP" value={form.zip} onChange={handleChange} className="input"/>
 
             {/* Services */}
             <div>
@@ -116,6 +116,7 @@ export default function QuoteForm({ services }) {
                     <label key={service.id} className="block">
                         <input
                           type="checkbox"
+                          checked={form.serviceIds.includes(Number(service.id))}
                           onChange={() => handleServiceChange(service.id)}
                         />
                         <span className="ml-2">{service.name}</span>
@@ -123,7 +124,7 @@ export default function QuoteForm({ services }) {
                 ))}
             </div>
 
-            <button>
+            <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
                 {loading ? "Submitting..." : " Submit Request"}
             </button>
         </form>
