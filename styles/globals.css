@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme Colors */
+:root {
+  --primary: #184F2E;
+  --accent: #C74900;
+  --bg: #FFFDEC;
+  --text: #33332F;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* Reusable input */
 .input {
-    @apply w-full border p-2  rounded;
+  @apply w-full border p-2 rounded;
 }

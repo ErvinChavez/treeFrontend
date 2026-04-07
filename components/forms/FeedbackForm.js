@@ -1,5 +1,21 @@
+import { useState } from "react";
+
 export default function FeedbackForm({ job, submitFeedback }) {
+    const [comment, setComment] = useState(job.feedback?.comment || "");
+
     if (job.status !== "completed") return null;
+
+    const handleSubmit = () => {
+    submitFeedback({
+      variables: {
+        jobId: Number(job.id),
+        rating: job.feedback?.rating || 5,
+        comment,
+      },
+    });
+    alert("Feedback submitted!");
+    setComment("");
+    };
 
     return (
         <div className="mt-4">
@@ -11,9 +27,9 @@ export default function FeedbackForm({ job, submitFeedback }) {
                 onChange={(e) => 
                     submitFeedback({
                         variables: {
-                        jobId: Number(job.id),
-                        rating: Number(e.target.value),
-                        comment: job.feedback?.comment || "",
+                            jobId: Number(job.id),
+                            rating: Number(e.target.value),
+                            comment,
                         },
                     })
                 }
@@ -28,30 +44,21 @@ export default function FeedbackForm({ job, submitFeedback }) {
             </select>
 
             {/* Comment */}
-            <textarea
-                placeholder="Leave a comment..."
-                defaultValue={job.feedback?.comment || ""}
-                onBlur={(e) =>
-                    submitFeedback({
-                        variables: {
-                        jobId: Number(job.id),
-                        rating: job.feedback?.rating || 5,
-                        comment: e.target.value,
-                        },
-                    })
-                }
-                className="w-full border p-2 rounded mt-2"
-            />
-
-            {/* Google Review Link */}
-            {job.feedback?.googleReviewLink && (
+            {job.feedback?.rating >= 4 && job.feedback?.googleReviewLink ? (
                 <a
                     href={job.feedback.googleReviewLink}
                     target="_blank"
                     className="text-blue-600 underline mt-2 block"
                 >
-                    Leave a Google Review
+                Leave a Google Review
                 </a>
+            ) : (
+                <button
+                    onClick={handleSubmit}
+                    className="bg-orange-600 text-white px-4 py-2 mt-2 rounded"
+                >
+                Leave a Review
+                </button>
             )}
         </div>
     );

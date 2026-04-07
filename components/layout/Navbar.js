@@ -10,9 +10,14 @@ export default function NavBar() {
   };
 
   return (
-    <div className="bg-white shadow p-4 flex justify-between">
-      <h1 className="font-bold">Admin Panel</h1>
+     <div className="bg-white shadow p-4 flex justify-between items-center">
+      {/* Logo + Name */}
+      <div className="flex items-center gap-2">
+        <img src="/chavezLogo.png" alt="Logo" className="h-8 w-8" />
+        <h1 className="font-bold text-lg">havez Tree Service</h1>
+      </div>
 
+      {/* Logout */}
       <button
         onClick={handleLogout}
         className="bg-red-500 text-white px-3 py-1 rounded"

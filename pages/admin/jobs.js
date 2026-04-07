@@ -8,11 +8,11 @@ import JobCard from "@/components/cards/JobCard";
 
 import { GET_JOBS} from "@/lib/graphql/queries/jobs";
 import { GET_EMPLOYEES } from "@/lib/graphql/queries/employees";
-
+import { SEND_REVIEW_REQUEST } from "@/lib/graphql/mutations/reviews";
 import {
   UPDATE_JOB_STATUS,
   ASSIGN_EMPLOYEES,
-  SUBMIT_FEEDBACK
+  SUBMIT_FEEDBACK,
 } from "@/lib/graphql/mutations/jobs";
 
 export default function Jobs() {
@@ -46,17 +46,83 @@ export default function Jobs() {
     }
   }, [data]);
 
+  // Group jobs by status
+  const groupedJobs = {
+    pending_quote: [],
+    quote_scheduled: [],
+    scheduled: [],
+    in_progress: [],
+    completed: [],
+    paid: [],
+    cancelled: [],
+  };
+
+  if (data?.jobs) {
+    data.jobs.forEach((job) => {
+      if (groupedJobs[job.status]) {
+        groupedJobs[job.status].push(job);
+      }
+    });
+  }
+
   //Mutations
   const [updateStatus] = useMutation(UPDATE_JOB_STATUS, {
-    refetchQueries: [{ query: GET_JOBS}],
+    update(cache, { data: { updateJobStatus } }) {
+      const existing = cache.readQuery({ query: GET_JOBS });
+
+      const updatedJobs = existing.jobs.map((job) =>
+        job.id === updateJobStatus.id
+          ? { ...job, status: updateJobStatus.status }
+          : job
+      );
+
+      cache.writeQuery({
+        query: GET_JOBS,
+        data: { jobs: updatedJobs },
+      });
+
+      //Trigger review request if status is now completed
+      if (updateJobStatus.status === "completed" && !job.reviewRequested) {
+        sendReviewRequest({ variables: { jobId: updateJobStatus.id } });
+      }
+    },
   });
 
   const [assignEmployees] = useMutation(ASSIGN_EMPLOYEES, {
-    refetchQueries: [{query: GET_JOBS}],
+    update(cache, { data }) {
+    },
   });
 
   const [submitFeedback] = useMutation(SUBMIT_FEEDBACK, {
-    refetchQueries: [{ query: GET_JOBS }],
+    update(cache, { data: { submitFeedback } }) {
+      const existing = cache.readQuery({ query: GET_JOBS });
+
+      if (!existing) return;
+
+      const updatedJobs = existing.jobs.map((job) =>
+        job.id === submitFeedback.id
+          ? { ...job, feedback: submitFeedback }
+          : job
+      );
+
+      cache.writeQuery({
+        query: GET_JOBS,
+        data: { jobs: updatedJobs },
+      });
+    },
+  });
+
+  const [sendReviewRequest] = useMutation(SEND_REVIEW_REQUEST, {
+    onCompleted: (data) => {
+      if (data.sendReviewRequest.success) {
+        console.log("Review request sent successfully!");
+      } else {
+        console.warn("Failed to send review request:", data.sendReviewRequest.message);
+      }
+    },
+    onError: (err) => {
+      console.error("Error sending review request:", err);
+    },
   });
 
   //UI States
@@ -69,22 +135,35 @@ export default function Jobs() {
         <div className="p-6">
           <h1 className="text-3xl font-bold mb-4">Jobs</h1>
 
-          <div className="grid gap-4">
-            {data?.jobs?.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                updateStatus={updateStatus}
-                submitFeedback={submitFeedback}
-                assignEmployees={assignEmployees}
-                empData={empData}
-                selectedEmployees={selectedEmployees}
-                setSelectedEmployees={setSelectedEmployees}
-                refetch={refetch}
-              />
-            ))}
-          </div>
+          <div className="space-y-8">
+          {Object.entries(groupedJobs).map(([status, jobs]) => {
+            if (jobs.length === 0) return null;
+
+            return (
+              <div key={status}>
+                <h2 className="text-xl font-bold mb-3">
+                  {status.replaceAll("_", " ").toUpperCase()}
+                </h2>
+
+                <div className="grid gap-4">
+                  {jobs.map((job) => (
+                    <JobCard
+                      key={job.id}
+                      job={job}
+                      updateStatus={updateStatus}
+                      submitFeedback={submitFeedback}
+                      assignEmployees={assignEmployees}
+                      empData={empData}
+                      selectedEmployees={selectedEmployees}
+                      setSelectedEmployees={setSelectedEmployees}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
+      </div>
     </AdminLayout>
   );
 }
