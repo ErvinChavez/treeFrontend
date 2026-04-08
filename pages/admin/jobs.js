@@ -68,25 +68,32 @@ export default function Jobs() {
   //Mutations
   const [updateStatus] = useMutation(UPDATE_JOB_STATUS, {
     update(cache, { data: { updateJobStatus } }) {
+      //Read existing jobs from cache
       const existing = cache.readQuery({ query: GET_JOBS });
 
+      // Map over jobs and update the one that changed
       const updatedJobs = existing.jobs.map((job) =>
         job.id === updateJobStatus.id
           ? { ...job, status: updateJobStatus.status }
           : job
       );
 
+      // Write updated jobs back to cache
       cache.writeQuery({
         query: GET_JOBS,
         data: { jobs: updatedJobs },
       });
 
-      //Trigger review request if status is now completed
-      if (updateJobStatus.status === "completed" && !job.reviewRequested) {
+      // Find the job we just updated in cache
+      const updatedJob = updatedJobs.find((job) => job.id === updateJobStatus.id);
+
+      //Trigger review request if completed and not already requested
+      if (updateJobStatus.status === "completed" && !updatedJob?.reviewRequested) {
         sendReviewRequest({ variables: { jobId: updateJobStatus.id } });
       }
     },
   });
+
 
   const [assignEmployees] = useMutation(ASSIGN_EMPLOYEES, {
     update(cache, { data }) {
@@ -114,10 +121,10 @@ export default function Jobs() {
 
   const [sendReviewRequest] = useMutation(SEND_REVIEW_REQUEST, {
     onCompleted: (data) => {
-      if (data.sendReviewRequest.success) {
+      if (data.sendReviewRequest) {
         console.log("Review request sent successfully!");
       } else {
-        console.warn("Failed to send review request:", data.sendReviewRequest.message);
+        console.warn("Review request was already sent or failed.");
       }
     },
     onError: (err) => {
