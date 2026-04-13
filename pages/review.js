@@ -71,8 +71,10 @@ export default function ReviewPage() {
 
   // Low rating → show feedback form
   return (
-    <div style={{ maxWidth: "500px", margin: "2rem auto", textAlign: "center" }}>
-      <h2>We're sorry your experience wasn't perfect 😔</h2>
+    <div
+      style={{ maxWidth: "500px", margin: "2rem auto", textAlign: "center" }}
+    >
+      <h2>We're sorry your experience wasn't perfect</h2>
       <p>Please tell us what we could improve:</p>
       <form onSubmit={handleSubmit}>
         <textarea
@@ -85,7 +87,10 @@ export default function ReviewPage() {
           style={{ width: "100%", padding: "0.5rem", fontSize: "1rem" }}
         />
         <br />
-        <button type="submit" style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}>
+        <button
+          type="submit"
+          style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}
+        >
           Send Feedback
         </button>
       </form>
