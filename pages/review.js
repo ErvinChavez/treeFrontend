@@ -74,7 +74,7 @@ export default function ReviewPage() {
     <div
       style={{ maxWidth: "500px", margin: "2rem auto", textAlign: "center" }}
     >
-      <h2>We're sorry your experience wasn't perfect</h2>
+      <h2>We're sorry your experience wasn't perfect.</h2>
       <p>Please tell us what we could improve:</p>
       <form onSubmit={handleSubmit}>
         <textarea
