@@ -22,7 +22,7 @@ export default function PhotoUpload({ jobId, type, onUpload }) {
         setLoading(true);
         try {
             const token = localStorage.getItem('token'); //JWT stored on login
-            const res = await axios.post('http://localhost:5000/api/upload', formData, {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'

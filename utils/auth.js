@@ -17,5 +17,14 @@ export const removeToken = () => {
 //check if logged in
 export const isAuthenticated = () => {
     if (typeof window === "undefined") return false;
-    return !!localStorage.getItem("token");
+    
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+
+    try {
+        const decoded = jwtDecode(token);
+        return decoded.exp * 1000 > Date.now();
+    } catch {
+        return false;
+    }
 };

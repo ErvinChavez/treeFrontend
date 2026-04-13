@@ -1,4 +1,3 @@
-// pages/review.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -17,7 +16,7 @@ export default function ReviewPage() {
     // Fetch from backend to handle high/low rating logic
     const fetchRating = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/review?jobId=${jobId}&rating=${rating}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review?jobId=${jobId}&rating=${rating}`);
         const data = await res.json();
 
         if (data.redirect) {
@@ -41,7 +40,7 @@ export default function ReviewPage() {
     if (!jobId || !userRating) return;
 
     try {
-      const res = await fetch("http://localhost:5000/review", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ jobId, rating: userRating, comment }),
