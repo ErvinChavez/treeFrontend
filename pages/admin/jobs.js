@@ -163,6 +163,7 @@ export default function Jobs() {
                       empData={empData}
                       selectedEmployees={selectedEmployees}
                       setSelectedEmployees={setSelectedEmployees}
+                      refetch={refetch}
                     />
                   ))}
                 </div>

@@ -14,7 +14,7 @@ export default function NavBar() {
       {/* Logo + Name */}
       <div className="flex items-center gap-2">
         <img src="/chavezLogo.png" alt="Logo" className="h-8 w-8" />
-        <h1 className="font-bold text-lg">havez Tree Service</h1>
+        <h1 className="font-bold text-lg">Chavez Tree Service</h1>
       </div>
 
       {/* Logout */}
