@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { useQuery, useMutation } from "@apollo/client/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { isAuthenticated } from "@/utils/auth";
@@ -14,13 +14,22 @@ export default function Employees() {
   const router = useRouter();
 
   // Protect route
-  useEffect(() => {
-    if (!isAuthenticated()) {
-      router.push("/admin/login");
-    }
-  }, [router]);
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
-  const { data, loading, error, refetch } = useQuery(GET_EMPLOYEES);
+  useEffect(() => {
+    const valid = isAuthenticated();
+
+    if (!valid) {
+      router.push("/admin/login");
+    } else {
+      setCheckedAuth(true);
+    }
+    }, []);
+
+    const { data, loading, error, refetch } = useQuery(GET_EMPLOYEES, {
+      skip: !checkedAuth,
+    });
+    
 
   const [createEmployee] = useMutation(CREATE_EMPLOYEE, {
     onCompleted: () => refetch(),
@@ -32,8 +41,8 @@ export default function Employees() {
     });
   };
 
+  if (!checkedAuth) return null;
   if (loading) return <p className="p-6">Loading employees...</p>;
-  if (!isAuthenticated()) return null;
   if (error) return <p className="p-6 text-red-500">Error loading employees</p>;
 
   return (

@@ -12,14 +12,23 @@ import {
 export default function ServicesAdmin() {
   const router = useRouter();
 
-  // 🔐 Protect route
-  useEffect(() => {
-    if (!isAuthenticated()) {
-      router.push("/admin/login");
-    }
-  }, [router]);
+  // Protect route
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
-  const { data, loading, error, refetch } = useQuery(GET_SERVICES);
+  useEffect(() => {
+    const valid = isAuthenticated();
+  
+    if (!valid) {
+      router.push("/admin/login");
+    } else {
+      setCheckedAuth(true);
+    }
+  }, []);
+
+  const { data, loading, error, refetch } = useQuery(GET_SERVICES, {
+    skip: !checkedAuth,
+  });
+  
 
   const [createService] = useMutation(CREATE_SERVICE);
   const [updateService] = useMutation(UPDATE_SERVICE);
@@ -32,11 +41,13 @@ export default function ServicesAdmin() {
 
   const [editService, setEditService] = useState(null);
 
+  if (!checkedAuth) return null;
   if (loading) return <p className="p-6">Loading services...</p>;
-  if (!isAuthenticated()) return null;
   if (error) return <p className="p-6 text-red-500">Error loading services</p>;
 
-  // ➕ ADD
+  const services = data?.services || [];
+  
+  //ADD
   const handleAdd = async () => {
     if (!newService.name) return;
 
@@ -45,14 +56,14 @@ export default function ServicesAdmin() {
     refetch();
   };
 
-  // ✏️ UPDATE
+  // UPDATE
   const handleUpdate = async () => {
     await updateService({ variables: editService });
     setEditService(null);
     refetch();
   };
 
-  // ❌ DELETE
+  // DELETE
   const handleDelete = async (id) => {
     await deleteService({ variables: { id } });
     refetch();
@@ -62,7 +73,7 @@ export default function ServicesAdmin() {
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Manage Services</h1>
 
-      {/* ➕ ADD NEW */}
+      {/* ADD NEW */}
       <div className="flex gap-2 mb-6">
         <input
           placeholder="Service name"
@@ -91,9 +102,9 @@ export default function ServicesAdmin() {
         </button>
       </div>
 
-      {/* 📋 LIST */}
+      {/* LIST */}
       <div className="grid gap-4">
-        {data.services.map((s) => (
+        {services.map((s) => (
           <div key={s.id} className="border p-4 rounded shadow">
             <p className="font-bold">{s.name}</p>
             <p className="text-gray-600">{s.description}</p>
@@ -123,7 +134,7 @@ export default function ServicesAdmin() {
         ))}
       </div>
 
-      {/* ✏️ EDIT MODAL */}
+      {/* EDIT MODAL */}
       {editService && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="bg-white p-6 rounded w-96">

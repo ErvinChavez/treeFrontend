@@ -19,57 +19,61 @@ export default function Jobs() {
   const router = useRouter();
   
   //protect route
+  const [checkedAuth, setCheckedAuth] = useState(false);
+
   useEffect(() => {
-    if (!isAuthenticated()) {
+    const valid = isAuthenticated();
+
+    if (!valid) {
       router.push("/admin/login");
+    } else {
+    setCheckedAuth(true);
     }
-  }, [router]);
+  }, []);
+
+  const { data, loading, error, refetch } = useQuery(GET_JOBS, {
+    skip: !checkedAuth,
+  });
     
-  //Queries
-  const { data, loading, error, refetch } = useQuery(GET_JOBS);
-  const { data: empData } = useQuery(GET_EMPLOYEES);
+
+  const { data: empData } = useQuery(GET_EMPLOYEES, {
+    skip: !checkedAuth,
+  });
 
   //local State
   const [selectedEmployees, setSelectedEmployees] = useState({});
 
-
-  //sync backend . local state
-  useEffect(()=> {
-    if (data?.jobs) {
-      const initial = {};
-
-      data.jobs.forEach((job) => {
-        initial[job.id] = job.employees?.map((e) => Number(e.id)) || [];
-      });
-
-      setSelectedEmployees(initial);
-    }
-  }, [data]);
-
-  // Group jobs by status
-  const groupedJobs = {
-    pending_quote: [],
-    quote_scheduled: [],
-    scheduled: [],
-    in_progress: [],
-    completed: [],
-    paid: [],
-    cancelled: [],
-  };
-
-  if (data?.jobs) {
-    data.jobs.forEach((job) => {
-      if (groupedJobs[job.status]) {
-        groupedJobs[job.status].push(job);
+  const [sendReviewRequest] = useMutation(SEND_REVIEW_REQUEST, {
+    onCompleted: (data) => {
+      if (data.sendReviewRequest) {
+        console.log("Review request sent successfully!");
+      } else {
+        console.warn("Review request was already sent or failed.");
       }
-    });
-  }
+    },
+    onError: (err) => {
+      console.error("Error sending review request:", err);
+    },
+  });
 
-  //Mutations
   const [updateStatus] = useMutation(UPDATE_JOB_STATUS, {
-    update(cache, { data: { updateJobStatus } }) {
+    onCompleted: (res) => {
+      const updated = res?.updateJobStatus;
+
+      if (updated?.status === "completed") {
+        sendReviewRequest({
+          variables: { jobId: updated.id },
+        });
+      }
+    },
+
+    update(cache, { data }) {
+      const updateJobStatus = data?.updateJobStatus;
+      if (!updateJobStatus) return;
+
       //Read existing jobs from cache
       const existing = cache.readQuery({ query: GET_JOBS });
+      if(!existing?.jobs) return;
 
       // Map over jobs and update the one that changed
       const updatedJobs = existing.jobs.map((job) =>
@@ -93,7 +97,6 @@ export default function Jobs() {
       }
     },
   });
-
 
   const [assignEmployees] = useMutation(ASSIGN_EMPLOYEES, {
     update(cache, { data }) {
@@ -119,23 +122,46 @@ export default function Jobs() {
     },
   });
 
-  const [sendReviewRequest] = useMutation(SEND_REVIEW_REQUEST, {
-    onCompleted: (data) => {
-      if (data.sendReviewRequest) {
-        console.log("Review request sent successfully!");
-      } else {
-        console.warn("Review request was already sent or failed.");
-      }
-    },
-    onError: (err) => {
-      console.error("Error sending review request:", err);
-    },
+  //sync backend . local state
+  useEffect(()=> {
+    if (data?.jobs) {
+      const initial = {};
+
+      data.jobs.forEach((job) => {
+        initial[job.id] = job.employees?.map((e) => Number(e.id)) || [];
+      });
+
+      setSelectedEmployees(initial);
+    }
+  }, [data]);
+
+//UI States
+  if (!checkedAuth) return null;
+  if (loading) return <p className="p-6">Loading jobs...</p>;
+  if (error) return <p className="p-6 text-red-500">Error loading jobs</p>;  
+
+  const jobs = data?.jobs || [];
+
+  // Group jobs by status
+  const groupedJobs = {
+    pending_quote: [],
+    quote_scheduled: [],
+    scheduled: [],
+    in_progress: [],
+    completed: [],
+    paid: [],
+    cancelled: [],
+  };
+
+  jobs.forEach((job) => {
+    if (groupedJobs[job.status]) {
+      groupedJobs[job.status].push(job);
+    }
   });
 
-  //UI States
-  if (loading) return <p className="p-6">Loading jobs...</p>;
-  if (!isAuthenticated()) return null;
-  if (error) return <p className="p-6 text-red-500">Error loading jobs</p>;
+  
+
+  
 
   return (
     <AdminLayout>
