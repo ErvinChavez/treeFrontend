@@ -1,6 +1,6 @@
 // pages/_app.js
 import '../styles/globals.css'; // import Tailwind and any global CSS
-import { ApolloProvider } from '@apollo/client/react'; //the wrapper component
+import { ApolloProvider } from '@apollo/client'; //the wrapper component
 import client from "../lib/apollo"; //the bridge with apollo.js
 import Footer from "@/components/layout/Footer";
 

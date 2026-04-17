@@ -1,65 +1,60 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useMutation } from "@apollo/client";
+import { SUBMIT_FEEDBACK } from "@/lib/graphql/mutations/jobs";
 
 export default function ReviewPage() {
   const router = useRouter();
-  const { jobId, rating } = router.query;
 
   const [userRating, setUserRating] = useState(null);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
+  
+  const [submitFeedback] = useMutation(SUBMIT_FEEDBACK);
 
   useEffect(() => {
-    if (!jobId || !rating) return;
+    if (!router.isReady) return;
 
-    // Fetch from backend to handle high/low rating logic
-    const fetchRating = async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review?jobId=${jobId}&rating=${rating}`);
-        const data = await res.json();
+    const { rating } = router.query;
+    const numRating = Number(rating);
 
-        if (data.redirect) {
-          // High rating → redirect to Google review
-          window.location.href = data.redirect;
-        } else {
-          setUserRating(data.rating);
-        }
-      } catch (err) {
-        console.error("Error fetching review info:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    // High rating → redirect instantly
+    if (numRating >= 4) {
+      window.location.href =
+        "https://g.page/r/CeBcAA5Lxo0aEBM/review";
+      return;
+    }
 
-    fetchRating();
-  }, [jobId, rating]);
+    setUserRating(numRating);
+    setLoading(false);
+  }, [router.isReady]);
+
+  
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!jobId || !userRating) return;
+      e.preventDefault();
+
+      const { jobId } = router.query;
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/review`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jobId, rating: userRating, comment }),
+      await submitFeedback({
+        variables: {
+        jobId: Number(jobId),
+        rating: Number(userRating),
+        comment,
+        },
       });
 
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        setSubmitted(true);
-      } else {
-        alert(data.error || "There was an error submitting your feedback.");
-      }
+      setSubmitted(true);
     } catch (err) {
       console.error(err);
       alert("There was an error submitting your feedback.");
     }
-  };
+};
 
-  if (loading) return <p>Loading...</p>;
+  if (!router.isReady || loading) return <p>Loading...</p>;
+
   if (submitted)
     return (
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
