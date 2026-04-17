@@ -60,9 +60,13 @@ export default function Jobs() {
     onCompleted: (res) => {
       const updated = res?.updateJobStatus;
 
+      console.log("STATUS UPDATED:", updated);
+
       if (updated?.status === "completed") {
+        console.log("🚀 Calling sendReviewRequest");
+        
         sendReviewRequest({
-          variables: { jobId: updated.id },
+          variables: { jobId: Number(updated.id) },
         });
       }
     },
@@ -88,13 +92,6 @@ export default function Jobs() {
         data: { jobs: updatedJobs },
       });
 
-      // Find the job we just updated in cache
-      const updatedJob = updatedJobs.find((job) => job.id === updateJobStatus.id);
-
-      //Trigger review request if completed and not already requested
-      if (updateJobStatus.status === "completed" && !updatedJob?.reviewRequested) {
-        sendReviewRequest({ variables: { jobId: updateJobStatus.id } });
-      }
     },
   });
 
