@@ -17,15 +17,7 @@ export default function ReviewPage() {
     if (!router.isReady) return;
 
     const { rating } = router.query;
-    const numRating = Number(rating);
-
-    // High rating → redirect instantly
-    if (numRating >= 4) {
-      window.location.href =
-        "https://g.page/r/CeBcAA5Lxo0aEBM/review";
-      return;
-    }
-
+    const numRating = Number(rating || 0);
     setUserRating(numRating);
     setLoading(false);
   }, [router.isReady]);
@@ -55,35 +47,70 @@ export default function ReviewPage() {
 
   if (!router.isReady || loading) return <p>Loading...</p>;
 
-  if (submitted)
+  const isPositive = userRating >= 4;
+
+  if (submitted) {
     return (
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
-        <h2>Thank you! Your feedback has been sent.</h2>
-        <p>We really appreciate you helping us improve our service.</p>
+      <div className="max-w-xl mx-auto mt-10 text-center px-4">
+        <h2 className="text-2xl font-semibold">
+          {isPositive ? "Thank you! 🙌" : "Thank you for your feedback"}
+        </h2>
+
+        <p className="mt-3 text-gray-600">
+          {isPositive
+            ? "We’re really glad you had a great experience."
+            : "We appreciate you helping us improve our service."}
+        </p>
+
+        <p className="mt-6 font-medium">
+          {isPositive
+            ? "Would you mind sharing your experience on Google?"
+            : "If you’d like, you can also leave a public review on Google."}
+        </p>
+
+        <a
+          href="https://g.page/r/CeBcAA5Lxo0aEBM/review"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`inline-block mt-4 px-5 py-3 rounded-lg font-semibold text-white shadow-md transition
+            ${isPositive ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"}
+          `}
+        >
+          {isPositive
+            ? "Leave a Google Review ⭐"
+            : "Leave Feedback on Google"}
+        </a>
       </div>
     );
+}
 
-  // Low rating → show feedback form
   return (
-    <div
-      style={{ maxWidth: "500px", margin: "2rem auto", textAlign: "center" }}
-    >
-      <h2>We're sorry your experience wasn't perfect.</h2>
-      <p>Please tell us what we could improve:</p>
+    <div className="max-w-xl mx-auto mt-10 text-center px-4">
+      <h2 className="text-2xl font-semibold">
+        {isPositive
+          ? "We're glad you had a great experience!"
+          : "We're sorry your experience wasn't perfect."}
+      </h2>
+
+      <p className="mt-2 text-gray-600">
+        {isPositive
+          ? "Feel free to share any additional comments."
+          : "Please tell us what we could improve."}
+      </p>
+
       <form onSubmit={handleSubmit}>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows={5}
-          cols={50}
-          placeholder="Your feedback"
+          placeholder="Your feedback..."
           required
-          style={{ width: "100%", padding: "0.5rem", fontSize: "1rem" }}
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
         />
-        <br />
+
         <button
           type="submit"
-          style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}
+          className="mt-4 w-full bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
         >
           Send Feedback
         </button>

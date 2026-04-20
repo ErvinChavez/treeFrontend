@@ -1,6 +1,5 @@
 import PhotoUpload from "@/components/forms/PhotoUpload";
 import StatusDropdown from "@/components/forms/StatusDropdown";
-import FeedbackForm from "@/components/forms/FeedbackForm";
 import EmployeeAssignForm from "@/components/forms/EmployeeAssignForm";
 import ClientInfo from "@/components/cards/ClientInfo";
 import ServiceList from "@/components/cards/ServiceList";
@@ -10,7 +9,6 @@ import PhotoUploadSection from "@/components/forms/PhotoUploadSection";
 export default function JobCard({
     job,
     updateStatus,
-    submitFeedback,
     assignEmployees,
     empData,
     selectedEmployees,
@@ -34,9 +32,6 @@ export default function JobCard({
 
         {/* Upload Photos */}
         <PhotoUploadSection jobId={job.id} refetch={refetch} />
-
-        {/* Feedback */}
-        <FeedbackForm job={job} submitFeedback={submitFeedback} />
 
         {/* Assign Employees */}
         <EmployeeAssignForm
