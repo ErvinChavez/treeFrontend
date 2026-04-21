@@ -28,7 +28,7 @@ It also includes an internal admin dashboard for managing jobs, services, employ
 ## Review System Flow
 
 1. Customer receives review request email after job completion
-2. Email contains rating links (1–5 stars)
+2. Email contains secure, tokenized review links (1–5 stars)
 3. Customer is redirected to `/review` page
 4. Customer submits feedback on-site
 5. Backend stores feedback and sends notifications if rating is low
@@ -62,8 +62,7 @@ npm run dev
 
 ---
 
-## ▶️ Running the App
+## API Connection
 
-```bash
-npm install
-npm run dev
+Make sure the backend is running at:
+http://localhost:4000/graphql
