@@ -46,12 +46,12 @@ It also includes an internal admin dashboard for managing jobs, services, employ
 ---
 
 ## 📁 Project Structure
-components/
-lib/
-pages/
-public/
-styles/
-utils/
+- components/
+- lib/
+- pages/
+- public/
+- styles/
+- utils/
 ---
 
 ## ▶️ Running the App
