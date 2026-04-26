@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import CallButton from "@/components/common/CallButton";
 
 export default function Home() {
   const router = useRouter();
@@ -36,6 +37,7 @@ export default function Home() {
           >
             Request a Quote
           </button>
+
 
           <button
             onClick={() => router.push("/admin/login")}
@@ -100,4 +102,4 @@ export default function Home() {
 
     </div>
   );
-}
+};

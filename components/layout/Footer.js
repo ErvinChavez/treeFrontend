@@ -13,7 +13,34 @@ export default function Footer() {
           <a href="/testimonials" className="hover:underline">Testimonials</a>
         </div>
 
+        <div className="flex gap-4 mt-4 items-center">
+          <a
+            href="https://www.facebook.com/ChavezTreeService/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/facebookLogo.png"
+              alt="Facebook"
+              className="h-6 w-6 hover:opacity-75 transition"
+            />
+          </a>
+
+          <a
+            href="https://www.instagram.com/chavez_tree"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="instagramLogo.png"
+              alt="Instagram"
+              className="h-6 w-6 hover:opacity-75 transition"
+            />
+
+          </a>
+        </div>
+
       </div>
     </footer>
   );
-}
+};
