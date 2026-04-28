@@ -10,14 +10,24 @@ export default function ReviewPage() {
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reviewToken, setReviewToken] = useState(null);
+  const [error, setError] = useState("");
   
   const [submitFeedback] = useMutation(SUBMIT_FEEDBACK);
 
   useEffect(() => {
     if (!router.isReady) return;
 
-    const { rating } = router.query;
+    const { token, rating } = router.query;
+
+    if(!token) {
+      console.error("Missing review token");
+      return;
+    }
+
     const numRating = Number(rating || 0);
+
+    setReviewToken(token);
     setUserRating(numRating);
     setLoading(false);
   }, [router.isReady]);
@@ -25,29 +35,39 @@ export default function ReviewPage() {
   
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      const { jobId } = router.query;
+    if (!reviewToken) {
+      alert("Invalid or expired review link.");
+      return;
+    }
+
+    if (!userRating || userRating < 1) {
+      alert("Invalid rating.");
+      return;
+    }
 
     try {
       await submitFeedback({
         variables: {
-        jobId: Number(jobId),
+        token: reviewToken,
         rating: Number(userRating),
         comment,
         },
       });
 
       setSubmitted(true);
+      setError("");
     } catch (err) {
       console.error(err);
-      alert("There was an error submitting your feedback.");
+      const message = err?.graphQLErrors?.[0]?.message || "There was an error submitting your feedback.";
+      setError(message);
     }
 };
 
   if (!router.isReady || loading) return <p>Loading...</p>;
 
-  const isPositive = userRating >= 4;
+  const isPositive = Number(userRating) >= 4;
 
   if (submitted) {
     return (
@@ -89,7 +109,7 @@ export default function ReviewPage() {
       <h2 className="text-2xl font-semibold">
         {isPositive
           ? "We're glad you had a great experience!"
-          : "We're sorry your experience wasn't perfect."}
+          : "We’re sorry we didn’t meet expectations."}
       </h2>
 
       <p className="mt-2 text-gray-600">
@@ -98,10 +118,18 @@ export default function ReviewPage() {
           : "Please tell us what we could improve."}
       </p>
 
+      {error && (
+        <div className="text-red-600 mb-4 font-medium">
+          {error}
+        </div>
+        )
+      }
+
+
       <form onSubmit={handleSubmit}>
         <textarea
           value={comment}
-          onChange={(e) => setComment(e.target.value)}
+          onChange={(e) => {setComment(e.target.value); setError("");}}
           rows={5}
           placeholder="Your feedback..."
           required
@@ -110,7 +138,8 @@ export default function ReviewPage() {
 
         <button
           type="submit"
-          className="mt-4 w-full bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
+          disabled={submitted}
+          className="mt-4 w-full bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition disabled:opacity-50"
         >
           Send Feedback
         </button>
