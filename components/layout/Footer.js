@@ -1,19 +1,32 @@
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white mt-10">
-      <div className="max-w-6xl mx-auto p-6 flex flex-col md:flex-row justify-between items-center">
+    <footer className="bg-brand-dark text-white mt-12 border-t border-gray-800">
+
+      {/* Logo row (NEW) */}
+      <div className="flex justify-center pt-6">
+        <img
+          src="/chavezLogo.png"
+          alt="Chavez Tree Service"
+          className="h-14 w-auto opacity-90"
+        />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
         
-        <p className="text-sm">
+        {/* Left - Copyright */}
+        <p className="text-sm text-gray-400 text-center md:text-left">
           © 1998-{new Date().getFullYear()} Chavez Tree Service
         </p>
 
-        <div className="flex gap-4 mt-2 md:mt-0">
-          <a href="/services" className="hover:underline">Services</a>
-          <a href="/quote" className="hover:underline">Get a Quote</a>
-          <a href="/testimonials" className="hover:underline">Testimonials</a>
+        {/* Center - Navigation */}
+        <div className="flex gap-6 text-sm">
+          <a href="/services" className="hover:text-brand-light transition">Services</a>
+          <a href="/quote" className="hover:text-brand-light transition">Get a Quote</a>
+          <a href="/testimonials" className="hover:text-brand-light transition">Testimonials</a>
         </div>
 
-        <div className="flex gap-4 mt-4 items-center">
+        {/* Right - Socials */}
+        <div className="flex gap-4 items-center">
           <a
             href="https://www.facebook.com/ChavezTreeService/"
             target="_blank"
@@ -22,7 +35,7 @@ export default function Footer() {
             <img
               src="/facebookLogo.png"
               alt="Facebook"
-              className="h-6 w-6 hover:opacity-75 transition"
+              className="h-6 w-6 hover:opacity-70 transition"
             />
           </a>
 
@@ -34,9 +47,8 @@ export default function Footer() {
             <img
               src="instagramLogo.png"
               alt="Instagram"
-              className="h-6 w-6 hover:opacity-75 transition"
+              className="h-6 w-6 hover:opacity-70 transition"
             />
-
           </a>
         </div>
 

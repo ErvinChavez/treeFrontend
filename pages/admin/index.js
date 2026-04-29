@@ -36,29 +36,29 @@ export default function AdminDashboard() {
 
     return (
         <AdminLayout>
-        <div className="p-6">
-            <h1 className="text-3xl font bold">Dashboard</h1>
+        <div>
+            <h1 className="page-title">Dashboard</h1>
             
             {/* Top Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid gap-4 md:grid-cols-4">
 
-                <div className="p-4 bg-white shadow rounded">
-                    <p className="text-gray-500">Total Jobs</p>
+                <div className="card">
+                    <p className="text-muted">Total Jobs</p>
                     <p className="text-2xl font-bold">{data?.totalJobs || 0}</p>
                 </div>
 
-                <div className="p-4 bg-white shadow rounded">
-                    <p className="text-gray-500">Total Clients</p>
+                <div className="card">
+                    <p className="text-muted">Total Clients</p>
                     <p className="text-2xl font-bold">{data?.totalClients || 0}</p>
                 </div>
                
-                <div className="p-4 bg-white shadow rounded">
-                    <p className="text-gray-500">Avg Rating</p>
+                <div className="card">
+                    <p className="text-muted">Avg Rating</p>
                     <p className="text-2xl font-bold">{data?.averageRating ? data.averageRating.toFixed(1) : "0.0"}</p>
                 </div>
                
-                <div className="p-4 bg-white shadow rounded">
-                    <p className="text-gray-500">Active Jobs</p>
+                <div className="card">
+                    <p className="text-muted">Active Jobs</p>
                     <p className="text-2xl font-bold">
                         {activeJobs}
                     </p>
@@ -67,15 +67,15 @@ export default function AdminDashboard() {
 
             {/* Jobs by Status */}
             <div className="mt-8">
-                <h2 className="text-xl font-semibold mb-4">Jobs by Status</h2>
+                <h2 className="text-lg font-semibold text-brand-dark mb-3">Jobs by Status</h2>
 
                 <div className="space-y-2">
                     {(data?.jobsByStatus || []).map((item) => (
-                        <div key={item.status} className="flex justify-between border p-2 rounded">
-                            <span className="capitalize">
+                        <div key={item.status} className="card flex justify-between items-center">
+                            <span className="capitalize text-gray-700">
                                 {item.status.replaceAll("_", " ")}
                             </span>
-                            <span className="font-bold">{item.count}</span>
+                            <span className="font-semibold text-brand-dark">{item.count}</span>
                         </div>
                     ))}
                 </div>

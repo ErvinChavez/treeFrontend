@@ -1,9 +1,10 @@
 export default function ClientInfo({ client }) {
     return (
-        <div className="mt-2">
-            <p><strong>Client:</strong> {client?.name}</p>
-            <p>{client?.email}</p>
-            <p>{client?.phone}</p>
+        <div className="section">
+            <p className="section-title">Client:</p>
+            <p className="font-medium">{client?.name}</p>
+            <p className="text-muted">{client?.email}</p>
+            <p className="text-muted">{client?.phone}</p>
         </div>
     );
 }

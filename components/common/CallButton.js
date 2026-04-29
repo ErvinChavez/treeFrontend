@@ -1,10 +1,12 @@
 export default function({className = ""}) {
+    const baseClasses = "btn btn-primary";
+
     return (
         <>
            {/* Desktop Button */}
             <a 
                 href="tel:+4048861996" 
-                className={`hidden md:inline-block bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition ${className}`}
+                className={`hidden md:inline-block ${baseClasses} px-6 py-3 shadow ${className}`}
             >
             Call Now  
             </a>
@@ -12,7 +14,7 @@ export default function({className = ""}) {
             {/* Mobile Sticky Button */}
             <a
                 href="tel:+4048861996"
-                className="fixed bottom-0 left-0 w-full bg-green-600 text-white text-center py-4 z-50 md:hidden"
+                className={`${baseClasses} md:hidden fixed bottom-0 left-0 w-full text-center py-4 z-50 shadow-lg rounded-none`}
             >
             Call Now
             </a> 

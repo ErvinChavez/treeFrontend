@@ -11,37 +11,44 @@ export default function EmployeeForm({ onCreate }) {
     e.preventDefault();
     onCreate(form);
 
-    setForm({
-      name: "",
-      email: "",
-      phone: "",
-    });
+    setForm({ name: "", email: "", phone: "" });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 mb-6">
-      <input
-        placeholder="Name"
-        value={form.name}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-        className="input"
-      />
+    <form onSubmit={handleSubmit} className="card space-y-3 mb-6">
+      <h2 className="text-lg font-semibold text-brand-dark">
+        Add Employee
+      </h2>
 
-      <input
-        placeholder="Email"
-        value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
-        className="input"
-      />
+      <div className="form-section">
+        <label className="label">Name</label>
+        <input
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          className="input"
+        />
+      </div>
 
-      <input
-        placeholder="Phone"
-        value={form.phone}
-        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-        className="input"
-      />
+      <div className="form-section">
+        <label className="label">Email</label>
+        <input
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          className="input"
+        />
+      </div>
 
-      <button className="bg-green-600 text-white px-4 py-2 rounded">
+      <div className="form-section">
+        <label className="label">Phone</label>
+        <input
+          value={form.phone}
+          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+          className="input"
+        />
+      </div>
+      
+
+      <button className="btn btn-primary">
         Add Employee
       </button>
     </form>

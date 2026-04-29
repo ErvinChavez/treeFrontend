@@ -1,23 +1,46 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function SideBar() {
-  return (
-    <div className="w-64 bg-gray-900 text-white min-h-screen p-4">
-      <h2 className="text-xl font-bold mb-6">Chavez Admin</h2>
+  const router = useRouter();
 
-      <nav className="space-y-2">
-        <Link href="/admin" className="block hover:bg-gray-700 p-2 rounded">
+  const linkClasses = (path) =>
+    `block px-3 py-2 rounded-lg text-sm transition ${
+      router.pathname === path
+        ? "bg-brand-light text-brand-dark font-medium"
+        : "text-gray-300 hover:bg-gray-800 hover:text-white"
+    }`;
+
+  return (
+    <div className="w-64 bg-brand-dark text-white min-h-screen p-4 flex flex-col">
+
+      {/* Header */}
+      <div className="mb-6">
+        <h2 className="text-xl font-bold mb-6">Chavez Admin</h2>
+        <p className="text-xs text-gray-400">Dashboard Panel</p>
+      </div>
+      
+      {/* Nav */}
+      <nav className="space-y-1">
+        <Link href="/admin" className={linkClasses("/admin")}>
           Dashboard
         </Link>
-        <Link href="/admin/jobs" className="block hover:bg-gray-700 p-2 rounded">
+        <Link href="/admin/jobs" className={linkClasses("/admin/jobs")}>
           Jobs
         </Link>
-        <Link href="/admin/employees" className="block hover:bg-gray-700 p-2 rounded">
+        <Link href="/admin/employees" className={linkClasses("/admin/employees")}>
           Employees
         </Link>
-        <Link href="/admin/services" className="block p-2 hover:bg-gray-200">
+        <Link href="/admin/services" className={linkClasses("/admin/services")}>
+        Services
         </Link>
       </nav>
+
+      {/* Footer (optional branding) */}
+      <div className="mt-auto pt-6 text-xs text-gray-500">
+        © Chavez Tree Service
+      </div>
+      
     </div>
   );
 }

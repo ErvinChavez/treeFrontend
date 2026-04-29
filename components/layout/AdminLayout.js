@@ -3,13 +3,13 @@ import NavBar from "./Navbar";
 
 export default function AdminLayout({ children }) {
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-gray-100">
       <SideBar />
 
-      <div className="flex-1">
+      <div className="flex-1 flex flex-col">
         <NavBar />
 
-        <main className="p-6 bg-gray-100 min-h-screen">
+        <main className="page">
           {children}
         </main>
       </div>

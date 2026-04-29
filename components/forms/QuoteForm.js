@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
-import client from "@/lib/apollo";
 
 //GraphQL mutation
 const CREATE_QUOTE = gql`
@@ -97,34 +96,68 @@ export default function QuoteForm({ services }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="card space-y-4">
+            <h2 className="text-lg font-semibold text-brand-dark">
+            Request a Quote
+            </h2>
+
             {/* Client Info */}
-            <input name="clientName" placeholder="Name" value={form.clientName} onChange={handleChange} className="input"/>
-            <input name="clientEmail" placeholder="Email" value={form.clientEmail} onChange={handleChange} className="input"/>
-            <input name="clientPhone" placeholder="Phone" value={form.clientPhone} onChange={handleChange} className="input"/>
+            <div className="form-section">
+                <label className="label">Name</label>
+                <input name="clientName" value={form.clientName} onChange={handleChange} className="input"/>
+            </div>
+
+            <div className="form-section">
+                <label className="label">Email</label>
+                <input name="clientEmail" value={form.clientEmail} onChange={handleChange} className="input"/>
+            </div>
+
+            <div className="form-section">
+                <label className="label">Phone</label>
+                <input name="clientPhone" value={form.clientPhone} onChange={handleChange} className="input"/>
+            </div>
 
             {/* Address */}
-            <input name="street" placeholder="Street" value={form.street} onChange={handleChange} className="input"/>
-            <input name="city" placeholder="City" value={form.city} onChange={handleChange} className="input"/>
-            <input name="state" placeholder="State" value={form.state} onChange={handleChange} className="input"/>
-            <input name="zip" placeholder="ZIP" value={form.zip} onChange={handleChange} className="input"/>
+
+            <div className="form-section">
+                <label className="label">Street</label>
+                <input name="street" value={form.street} onChange={handleChange} className="input"/>
+            </div>
+            <div className="form-section">
+                <label className="label">City</label>
+                <input name="city" value={form.city} onChange={handleChange} className="input"/>
+            </div>
+            <div className="form-section">
+                <label className="label">State</label>
+                <input name="state" value={form.state} onChange={handleChange} className="input"/>
+            </div>
+            <div className="form-section">
+                <label className="label">Zip</label>
+                <input name="zip" value={form.zip} onChange={handleChange} className="input"/>
+            </div>
+            
+            
+            
 
             {/* Services */}
             <div>
-                <p className="font-semibold mb-2">Select Services:</p>
-                {services.map((service) => (
-                    <label key={service.id} className="block">
-                        <input
-                          type="checkbox"
-                          checked={form.serviceIds.includes(Number(service.id))}
-                          onChange={() => handleServiceChange(service.id)}
-                        />
-                        <span className="ml-2">{service.name}</span>
-                    </label>
-                ))}
+                <p className="section-title">Select Services:</p>
+
+                <div className="space-y-1">
+                    {services.map((service) => (
+                        <label key={service.id} className="flex items-center gap-2 text-sm">
+                            <input
+                            type="checkbox"
+                            checked={form.serviceIds.includes(Number(service.id))}
+                            onChange={() => handleServiceChange(service.id)}
+                            />
+                            {service.name}
+                        </label>
+                    ))}
+                </div>
             </div>
 
-            <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
+            <button type="submit" className="btn btn-primary w-full">
                 {loading ? "Submitting..." : " Submit Request"}
             </button>
         </form>

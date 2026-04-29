@@ -16,7 +16,7 @@ export default function JobCard({
     refetch
 }) {
   return (
-    <div className="border p-4 rounded shadow">
+    <div className="card space-y-3">
 
         {/* Status Dropdown */}
         <StatusDropdown job={job} updateStatus={updateStatus} />

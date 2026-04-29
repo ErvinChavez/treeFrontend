@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from 'axios';
 
-export default function PhotoUpload({ jobId, type, onUpload }) {
+export default function PhotoUpload({ jobId, onUpload }) {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -38,13 +38,13 @@ export default function PhotoUpload({ jobId, type, onUpload }) {
     };
 
     return (
-        <div>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-            {error && <span className="text-red-500">{error}</span>}
+        <div className="space-y-2">
+            <input type="file" accept="image/*" onChange={handleFileChange} className="text-sm"/>
+            {error && <span className="text-red-500 text-sm">{error}</span>}
             <button
                 onClick={handleUpload}
                 disabled={loading}
-                className="bg-blue-600 text-white px-4 py-2 rounded"
+                className="btn btn-secondary"
             >
                 {loading ? 'Uploading...' : 'Upload Photo'}
             </button>

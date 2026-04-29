@@ -10,17 +10,17 @@ export default function NavBar() {
   };
 
   return (
-     <div className="bg-white shadow p-4 flex justify-between items-center">
+     <div className="bg-white border-b px-6 py-3 flex justify-between items-center">
       {/* Logo + Name */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <img src="/chavezLogo.png" alt="Logo" className="h-8 w-8" />
-        <h1 className="font-bold text-lg">Chavez Tree Service</h1>
+        <h1 className="font-semibold text-brand-dark">Chavez Tree Service</h1>
       </div>
 
       {/* Logout */}
       <button
         onClick={handleLogout}
-        className="bg-red-500 text-white px-3 py-1 rounded"
+        className="btn btn-danger"
       >
         Logout
       </button>
