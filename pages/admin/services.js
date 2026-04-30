@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useRouter } from "next/router";
 import { isAuthenticated } from "@/utils/auth";
+import AdminLayout from "@/components/layout/AdminLayout";
 import {
   GET_SERVICES,
   CREATE_SERVICE,
@@ -70,113 +71,122 @@ export default function ServicesAdmin() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Manage Services</h1>
+    <AdminLayout>
+      <div className="stack">
+        <h1 className="page-title">Manage Services</h1>
 
-      {/* ADD NEW */}
-      <div className="flex gap-2 mb-6">
-        <input
-          placeholder="Service name"
-          value={newService.name}
-          onChange={(e) =>
-            setNewService({ ...newService, name: e.target.value })
-          }
-          className="border p-2 rounded"
-        />
-        <input
-          placeholder="Description"
-          value={newService.description}
-          onChange={(e) =>
-            setNewService({
-              ...newService,
-              description: e.target.value,
-            })
-          }
-          className="border p-2 rounded"
-        />
-        <button
-          onClick={handleAdd}
-          className="bg-green-600 text-white px-4 rounded"
-        >
-          Add
-        </button>
-      </div>
+        {/* ADD NEW */}
+        <div className="section-card flex flex-col md:flex-row gap-2">
+          <input
+            placeholder="Service name"
+            value={newService.name}
+            onChange={(e) =>
+              setNewService({ ...newService, name: e.target.value })
+            }
+            className="input"
+          />
+          <input
+            placeholder="Description"
+            value={newService.description}
+            onChange={(e) =>
+              setNewService({
+                ...newService,
+                description: e.target.value,
+              })
+            }
+            className="input"
+          />
+          <button onClick={handleAdd} className="btn btn-primary">
+            Add
+          </button>
+        </div>
 
-      {/* LIST */}
-      <div className="grid gap-4">
-        {services.map((s) => (
-          <div key={s.id} className="border p-4 rounded shadow">
-            <p className="font-bold">{s.name}</p>
-            <p className="text-gray-600">{s.description}</p>
+        {/* LIST */}
+        <div className="section">
+          <h2 className="section-title">Services</h2>
 
-            <div className="mt-3 flex gap-2">
-              <button
-                onClick={() =>
-                  setEditService({
-                    id: Number(s.id),
-                    name: s.name,
-                    description: s.description,
-                  })
-                }
-                className="bg-yellow-500 px-3 py-1 rounded"
-              >
-                Edit
-              </button>
+          <div className="section-body">
+            <div className="grid gap-4">
+              {services.map((s) => (
+                <div key={s.id} className="card card-interactive">
 
-              <button
-                onClick={() => handleDelete(Number(s.id))}
-                className="bg-red-600 text-white px-3 py-1 rounded"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+                  <p className="text-subtitle">{s.name}</p>
+                  <p className="text-muted">{s.description}</p>
 
-      {/* EDIT MODAL */}
-      {editService && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-          <div className="bg-white p-6 rounded w-96">
-            <h2 className="text-xl mb-4">Edit Service</h2>
+                  <div className="card-footer">
+                    <button
+                      onClick={() =>
+                        setEditService({
+                          id: Number(s.id),
+                          name: s.name,
+                          description: s.description,
+                        })
+                      }
+                      className="btn btn-secondary"
+                    >
+                      Edit
+                    </button>
 
-            <input
-              value={editService.name}
-              onChange={(e) =>
-                setEditService({ ...editService, name: e.target.value })
-              }
-              className="border p-2 rounded w-full mb-2"
-            />
-
-            <input
-              value={editService.description}
-              onChange={(e) =>
-                setEditService({
-                  ...editService,
-                  description: e.target.value,
-                })
-              }
-              className="border p-2 rounded w-full mb-4"
-            />
-
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setEditService(null)}
-                className="border px-3 py-1 rounded"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={handleUpdate}
-                className="bg-blue-600 text-white px-3 py-1 rounded"
-              >
-                Save
-              </button>
+                    <button
+                      onClick={() => handleDelete(Number(s.id))}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </div>
+             
+                </div>
+              ))} 
             </div>
           </div>
         </div>
-      )}
-    </div>
+
+        {/* EDIT MODAL */}
+        {editService && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            
+            <div className="card w-96 stack-sm">
+
+              <h2 className="text-title">Edit Service</h2>
+
+              <input
+                value={editService.name}
+                onChange={(e) =>
+                  setEditService({ ...editService, name: e.target.value })
+                }
+                className="input"
+              />
+
+              <input
+                value={editService.description}
+                onChange={(e) =>
+                  setEditService({
+                    ...editService,
+                    description: e.target.value,
+                  })
+                }
+                className="input"
+              />
+
+              <div className="card-footer">
+                <button
+                  onClick={() => setEditService(null)}
+                  className="btn btn-secondary"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={handleUpdate}
+                  className="btn btn-primary"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </AdminLayout>
   );
 }

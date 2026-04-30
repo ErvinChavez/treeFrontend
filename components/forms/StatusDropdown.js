@@ -2,8 +2,8 @@ import { formatStatus } from "@/utils/format";
 
 export default function StatusDropdown({job, updateStatus}) {  
     return (
-        <div className="section">
-            <p className="section-title">
+        <div className="stack-xs">
+            <p className="text-subtitle">
                 Status: {formatStatus(job.status)}
             </p>
             <select

@@ -96,68 +96,40 @@ export default function QuoteForm({ services }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="card space-y-4">
-            <h2 className="text-lg font-semibold text-brand-dark">
-            Request a Quote
-            </h2>
+        <form onSubmit={handleSubmit} className="stack">
 
             {/* Client Info */}
-            <div className="form-section">
-                <label className="label">Name</label>
-                <input name="clientName" value={form.clientName} onChange={handleChange} className="input"/>
-            </div>
-
-            <div className="form-section">
-                <label className="label">Email</label>
-                <input name="clientEmail" value={form.clientEmail} onChange={handleChange} className="input"/>
-            </div>
-
-            <div className="form-section">
-                <label className="label">Phone</label>
-                <input name="clientPhone" value={form.clientPhone} onChange={handleChange} className="input"/>
+            <div className="stack-sm">
+                <input name="clientName" placeholder="Name" value={form.clientName} onChange={handleChange} className="input"/>
+                <input name="clientEmail" placeholder="Email" value={form.clientEmail} onChange={handleChange} className="input"/>
+                <input name="clientPhone" placeholder="Phone" value={form.clientPhone} onChange={handleChange} className="input"/>
             </div>
 
             {/* Address */}
-
-            <div className="form-section">
-                <label className="label">Street</label>
-                <input name="street" value={form.street} onChange={handleChange} className="input"/>
-            </div>
-            <div className="form-section">
-                <label className="label">City</label>
-                <input name="city" value={form.city} onChange={handleChange} className="input"/>
-            </div>
-            <div className="form-section">
-                <label className="label">State</label>
-                <input name="state" value={form.state} onChange={handleChange} className="input"/>
-            </div>
-            <div className="form-section">
-                <label className="label">Zip</label>
-                <input name="zip" value={form.zip} onChange={handleChange} className="input"/>
+            <div className="stack-sm">
+                <input name="street" placeholder="Street" value={form.street} onChange={handleChange} className="input"/>
+                <input name="city" placeholder="City" value={form.city} onChange={handleChange} className="input"/>
+                <input name="state" placeholder="State" value={form.state} onChange={handleChange} className="input"/>
+                <input name="zip" placeholder="ZIP" value={form.zip} onChange={handleChange} className="input"/>
             </div>
             
-            
-            
-
             {/* Services */}
-            <div>
+            <div className="stack-xs">
                 <p className="section-title">Select Services:</p>
 
-                <div className="space-y-1">
-                    {services.map((service) => (
-                        <label key={service.id} className="flex items-center gap-2 text-sm">
-                            <input
-                            type="checkbox"
-                            checked={form.serviceIds.includes(Number(service.id))}
-                            onChange={() => handleServiceChange(service.id)}
-                            />
-                            {service.name}
-                        </label>
-                    ))}
-                </div>
+                {services.map((service) => (
+                    <label key={service.id} className="flex items-center gap-2 text-body">
+                        <input
+                        type="checkbox"
+                        checked={form.serviceIds.includes(Number(service.id))}
+                        onChange={() => handleServiceChange(service.id)}
+                        />
+                        {service.name}
+                    </label>
+                ))}
             </div>
 
-            <button type="submit" className="btn btn-primary w-full">
+            <button type="submit" className="btn btn-primary">
                 {loading ? "Submitting..." : " Submit Request"}
             </button>
         </form>

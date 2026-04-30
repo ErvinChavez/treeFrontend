@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -47,17 +46,35 @@ export default function Employees() {
 
   return (
     <AdminLayout>
-      <h1 className="text-3xl font-bold mb-4">Employees</h1>
 
-      {/* Create Employee */}
-      <EmployeeForm onCreate={handleCreate} />
+      <div className="stack">
 
-      {/* Employee List */}
-      <div className="grid gap-4 md:grid-cols-2">
-        {data?.employees?.map((emp) => (
-          <EmployeeCard key={emp.id} employee={emp} />
-        ))}
+        {/* Header */}
+        <div>
+          <h1 className="page-title">Employees</h1>
+          <p className="text-muted">Manage your team members</p>
+        </div>
+
+        {/* Form Section */}
+        <div className="section-card">
+          <h2 className="section-title">Add Employee</h2>
+          <div className="section-body">
+            <EmployeeForm onCreate={handleCreate} />
+          </div>
+        </div>
+
+        {/* List Section */}
+        <div className="section">
+          <h2 className="section-title">Team</h2>
+          
+          <div className="grid gap-4 md:grid-cols-2">
+            {data?.employees?.map((emp) => (
+              <EmployeeCard key={emp.id} employee={emp} />
+            ))}
+          </div>
+        </div>
       </div>
+      
     </AdminLayout>
   );
 }

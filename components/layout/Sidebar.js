@@ -5,10 +5,10 @@ export default function SideBar() {
   const router = useRouter();
 
   const linkClasses = (path) =>
-    `block px-3 py-2 rounded-lg text-sm transition ${
+    `block px-3 py-2 rounded-lg text-sm transition-base ${
       router.pathname === path
-        ? "bg-brand-light text-brand-dark font-medium"
-        : "text-gray-300 hover:bg-gray-800 hover:text-white"
+        ? "bg-brand-accent text-white font-medium"
+        : "text-white/70 hover:bg-white/10 hover:text-white"
     }`;
 
   return (
@@ -16,8 +16,8 @@ export default function SideBar() {
 
       {/* Header */}
       <div className="mb-6">
-        <h2 className="text-xl font-bold mb-6">Chavez Admin</h2>
-        <p className="text-xs text-gray-400">Dashboard Panel</p>
+        <h2 className="text-title-dark">Chavez Admin</h2>
+        <p className="text-caption-dark">Dashboard Panel</p>
       </div>
       
       {/* Nav */}
@@ -36,8 +36,8 @@ export default function SideBar() {
         </Link>
       </nav>
 
-      {/* Footer (optional branding) */}
-      <div className="mt-auto pt-6 text-xs text-gray-500">
+      {/* Footer */}
+      <div className="mt-auto pt-6 text-caption text-white/40">
         © Chavez Tree Service
       </div>
       

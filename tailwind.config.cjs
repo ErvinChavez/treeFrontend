@@ -7,12 +7,13 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          dark: "#191913",     // Rangoon Green
-          light: "#bbbbad",    // Eagle
+          dark: "#0f1a01",     // Rangoon Green
+          light: "#afaa9a",    // Eagle
           wood: {
-            primary: "#77422f",   // Old Copper
-            secondary: "#9d6345", // Cape Palliser
-          }
+            primary: "#77552f",   // Old Copper
+            secondary: "#694a30", // Cape Palliser
+          },
+          accent: "#C74900"
         }
       }
     },

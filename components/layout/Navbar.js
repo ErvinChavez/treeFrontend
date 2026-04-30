@@ -10,20 +10,25 @@ export default function NavBar() {
   };
 
   return (
-     <div className="bg-white border-b px-6 py-3 flex justify-between items-center">
-      {/* Logo + Name */}
-      <div className="flex items-center gap-3">
-        <img src="/chavezLogo.png" alt="Logo" className="h-8 w-8" />
-        <h1 className="font-semibold text-brand-dark">Chavez Tree Service</h1>
-      </div>
+     <div className="bg-white border-b border-brand-wood-secondary/20">
 
-      {/* Logout */}
-      <button
-        onClick={handleLogout}
-        className="btn btn-danger"
-      >
-        Logout
-      </button>
+      <div className="app-container flex justify-between items-center py-3">
+      
+        {/* Logo */}
+        <div className="flex items-center gap-3">
+          <img src="/chavezLogo.png" alt="Logo" className="h-8 w-8" />
+          <h1 className="text-subtitle">Chavez Tree Service</h1>
+        </div>
+     
+
+        {/* Logout */}
+        <button
+          onClick={handleLogout}
+          className="btn btn-danger"
+        >
+          Logout
+        </button>
+    </div> 
     </div>
   );
 }

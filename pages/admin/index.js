@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -36,7 +35,7 @@ export default function AdminDashboard() {
 
     return (
         <AdminLayout>
-        <div>
+        <div className="stack">
             <h1 className="page-title">Dashboard</h1>
             
             {/* Top Metrics */}
@@ -44,38 +43,38 @@ export default function AdminDashboard() {
 
                 <div className="card">
                     <p className="text-muted">Total Jobs</p>
-                    <p className="text-2xl font-bold">{data?.totalJobs || 0}</p>
+                    <p className="text-title">{data?.totalJobs || 0}</p>
                 </div>
 
                 <div className="card">
                     <p className="text-muted">Total Clients</p>
-                    <p className="text-2xl font-bold">{data?.totalClients || 0}</p>
+                    <p className="text-title">{data?.totalClients || 0}</p>
                 </div>
                
                 <div className="card">
                     <p className="text-muted">Avg Rating</p>
-                    <p className="text-2xl font-bold">{data?.averageRating ? data.averageRating.toFixed(1) : "0.0"}</p>
+                    <p className="text-title">{data?.averageRating ? data.averageRating.toFixed(1) : "0.0"}</p>
                 </div>
                
                 <div className="card">
                     <p className="text-muted">Active Jobs</p>
-                    <p className="text-2xl font-bold">
+                    <p className="text-title">
                         {activeJobs}
                     </p>
                 </div>
             </div>
 
             {/* Jobs by Status */}
-            <div className="mt-8">
-                <h2 className="text-lg font-semibold text-brand-dark mb-3">Jobs by Status</h2>
+            <div className="section">
+                <h2 className="section-title">Jobs by Status</h2>
 
-                <div className="space-y-2">
+                <div className="section-body">
                     {(data?.jobsByStatus || []).map((item) => (
                         <div key={item.status} className="card flex justify-between items-center">
-                            <span className="capitalize text-gray-700">
+                            <span className="text-body capitalize">
                                 {item.status.replaceAll("_", " ")}
                             </span>
-                            <span className="font-semibold text-brand-dark">{item.count}</span>
+                            <span className="text-subtitle">{item.count}</span>
                         </div>
                     ))}
                 </div>

@@ -1,9 +1,9 @@
 export default function PhotoGallery({ photos }) {
     return (
-        <div className="section">
+        <div className="stack-xs">
             <p className="section-title">Photos:</p>
 
-            <div className="flex gap-2 overflow-x-auto mt-2">
+            <div className="flex gap-2 overflow-x-auto">
                 {photos?.map((url, i) => (
                     <img
                         key={i}

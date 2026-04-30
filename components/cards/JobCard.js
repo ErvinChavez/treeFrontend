@@ -1,4 +1,3 @@
-import PhotoUpload from "@/components/forms/PhotoUpload";
 import StatusDropdown from "@/components/forms/StatusDropdown";
 import EmployeeAssignForm from "@/components/forms/EmployeeAssignForm";
 import ClientInfo from "@/components/cards/ClientInfo";
@@ -16,31 +15,37 @@ export default function JobCard({
     refetch
 }) {
   return (
-    <div className="card space-y-3">
+    <div className="card stack">
 
         {/* Status Dropdown */}
         <StatusDropdown job={job} updateStatus={updateStatus} />
-                    
-        {/* Client Info */}
-        <ClientInfo client={job.client} />
 
-        {/* Services */}
-        <ServiceList services={job.services} />
+        <div className="stack-sm">
+          {/* Client Info */}
+          <ClientInfo client={job.client} />
 
-        {/* Photos */}
-        <PhotoGallery photos={job.photos} /> 
+          {/* Services */}
+          <ServiceList services={job.services} />
+        </div>            
 
-        {/* Upload Photos */}
-        <PhotoUploadSection jobId={job.id} refetch={refetch} />
+        <div className="section">
+          {/* Photos */}
+          <PhotoGallery photos={job.photos} />
 
-        {/* Assign Employees */}
-        <EmployeeAssignForm
+          {/* Upload Photos */}
+          <PhotoUploadSection jobId={job.id} refetch={refetch} />
+        </div>
+         
+        <div className="section">
+          {/* Assign Employees */}
+          <EmployeeAssignForm
             job={job}
             empData={empData}
             selectedEmployees={selectedEmployees}
             setSelectedEmployees={setSelectedEmployees}
             assignEmployees={assignEmployees}
-        />  
+          />
+        </div>      
     </div>
   );
 }

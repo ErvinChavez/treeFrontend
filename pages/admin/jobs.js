@@ -162,19 +162,33 @@ export default function Jobs() {
 
   return (
     <AdminLayout>
-        <div className="p-6">
-          <h1 className="text-3xl font-bold mb-4">Jobs</h1>
+        <div className="stack">
 
-          <div className="space-y-8">
+          {/* Header */}
+          <div>
+            <h1 className="page-title">Jobs</h1>
+            <p className="text-muted">Track and manage all jobs</p>
+          </div>
+
+          {/* Job Groups */}
           {Object.entries(groupedJobs).map(([status, jobs]) => {
             if (jobs.length === 0) return null;
 
             return (
-              <div key={status}>
-                <h2 className="text-xl font-bold mb-3">
-                  {status.replaceAll("_", " ").toUpperCase()}
-                </h2>
+              <div key={status} className="section">
 
+                {/* Section Header */}
+                <div className="flex items-center justify-between">
+                  <h2 className="section-title">
+                    {status.replaceAll("_", " ").toUpperCase()}
+                  </h2>
+
+                  <span className="text-caption">
+                    {jobs.length} jobs
+                  </span>
+                </div>   
+
+                {/* Jobs */}
                 <div className="grid gap-4">
                   {jobs.map((job) => (
                     <JobCard
@@ -192,8 +206,7 @@ export default function Jobs() {
                 </div>
               </div>
             );
-          })}
-        </div>
+          })} 
       </div>
     </AdminLayout>
   );

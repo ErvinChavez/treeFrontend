@@ -6,12 +6,12 @@ export default function EmployeeAssignForm({
     assignEmployees
 }) {
     return (
-        <div className="section">
+        <div className="stack-xs">
             <p className="section-title">Assign Employees</p>
 
-            <div className="space-y-1">
+            <div className="space-y-2">
                 {empData?.employees?.map((emp) => (
-                    <label key={emp.id} className="flex items-center gap-2 text-sm">
+                    <label key={emp.id} className="flex items-center gap-2 text-body cursor-pointer">
                         <input
                             type="checkbox"
                             checked={

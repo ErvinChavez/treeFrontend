@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
 import { setToken } from "@/utils/auth";
 import { LOGIN_ADMIN } from "@/lib/graphql/mutations/auth";
@@ -22,9 +21,17 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
-          <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow w-80 space-y-3">
-            <h2 className="text-xl font-bold">Admin Login</h2>
+        <div className="min-h-screen flex items-center justify-center bg-brand-light">
+          <form onSubmit={handleSubmit} className="card w-80 stack-sm">
+
+            {/* Logo */}
+            <div className="flex justify-center">
+              <img src="/chavezLogo.png" className="h-12" />
+            </div>
+
+            <h2 className="text-title text-center">
+              Admin Login
+            </h2>
 
             <input 
               type="email"
@@ -40,7 +47,7 @@ export default function Login() {
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
 
-            <button type="submit" className="bg-green-600 text-white w-full py-2 rounded">
+            <button className="btn btn-primary w-full">
                 {loading ? "Logging in..." : " Login"}
             </button>
           </form>
