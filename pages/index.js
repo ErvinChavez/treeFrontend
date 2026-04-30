@@ -40,9 +40,8 @@ export default function Home() {
               Request a Quote
             </button>
 
-
             <button
-              nClick={() => router.push("/admin/login")}
+              onClick={() => router.push("/admin/login")}
               className="btn btn-outline"
             >
               Admin Login

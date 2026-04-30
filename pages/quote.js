@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { createApolloClient } from "@/lib/apollo";
 import QuoteForm from "@/components/forms/QuoteForm";
 import { GET_SERVICES } from "@/lib/graphql/queries/services";

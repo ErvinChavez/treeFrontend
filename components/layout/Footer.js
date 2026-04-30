@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-brand-dark text-white mt-12 border-t border-white/10">
+    <footer className="bg-brand-dark text-white mt-12 border-t border-white/10 pb-20 md:pb-0" >
 
       {/* Logo */}
       <div className="flex justify-center pt-6">
