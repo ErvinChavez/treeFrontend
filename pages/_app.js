@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }) {
     //This causes the client connection to every single page and component in your project
     <ApolloProvider client={client}>
       <>
-        <main className={!isAdmin ? "pb-20" : ""}>
+        <main className={!isAdmin ? "pb-20 app-container" : ""}>
           <Component {...pageProps} />
         </main>
         
