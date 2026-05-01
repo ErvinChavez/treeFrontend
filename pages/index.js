@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
+import { createApolloClient } from "@/lib/apollo";
+import { GET_SERVICES } from "@/lib/graphql/queries/services";
 
-export default function Home() {
+export default function Home({ services }) {
   const router = useRouter();
 
   return (
@@ -26,9 +28,14 @@ export default function Home() {
             Chavez Tree Service
           </h1>
 
+          <h2 className="text-xl font-semibold text-gray-700 mt-2">
+            Professional Tree Removal & Trimming Services in Atlanta, GA
+          </h2>
+
           <p className="text-muted max-w-xl mx-auto mt-3">
-            Professional tree removal, land clearing, and outdoor services you can trust.
-            Fast quotes. Reliable crews. Quality work.
+            Based in Lawrenceville, GA, Chavez Tree Service provides professional tree removal,
+            land clearing, and tree trimming services throughout the greater Atlanta area
+            and North Georgia.
           </p>
 
           {/* CTA Buttons */}
@@ -58,16 +65,11 @@ export default function Home() {
         </h2>
 
         <div className="grid md:grid-cols-3 gap-4">
-          {[
-            "Tree Removal",
-            "Land Clearing",
-            "Tree Trimming",
-            "Emergency Tree Removal"
-          ].map((service) => (
-            <div key={service} className="card card-interactive">
-              <p className="text-subtitle">{service}</p>
+          {services.map((service) => (
+            <div key={service.id} className="card card-interactive">
+              <p className="text-subtitle">{service.name}</p>
               <p className="text-muted mt-1">
-                Professional and reliable {service.toLowerCase()} services tailored to your needs.
+                {service.description}
               </p>
             </div>
           ))}
@@ -100,3 +102,19 @@ export default function Home() {
   );
 
 };
+
+/* DATA FETCH */
+export async function getStaticProps() {
+  const client = createApolloClient();
+
+  const { data } = await client.query({
+    query: GET_SERVICES,
+  });
+
+  return {
+    props: {
+      services: data.services,
+    },
+    revalidate: 60,
+  };
+}
