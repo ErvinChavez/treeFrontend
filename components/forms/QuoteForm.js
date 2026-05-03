@@ -42,6 +42,8 @@ export default function QuoteForm({ services }) {
         serviceIds: [],
     });
 
+    const [error, setError] = useState("");
+
     const [createQuote, { loading }] = useMutation(CREATE_QUOTE, {
         onCompleted: () => {
             alert("Quote request submitted!");
@@ -85,6 +87,21 @@ export default function QuoteForm({ services }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (
+            !form.clientName.trim() ||
+            !form.clientEmail.trim() ||
+            !form.clientPhone.trim() ||
+            !form.street.trim() ||
+            !form.city.trim() ||
+            !form.state.trim() ||
+            !form.zip.trim() 
+        ) {
+            setError("All fields are required to submit a quote request.");
+            return;
+        }
+
+        setError("");
+
         console.log("Form Data:", form);
 
         await createQuote({
@@ -96,21 +113,23 @@ export default function QuoteForm({ services }) {
     };
 
     return (
+        <>
+        {error && <p className="text-red-500 mb-2">{error}</p>}
         <form onSubmit={handleSubmit} className="stack">
 
             {/* Client Info */}
             <div className="stack-sm">
-                <input name="clientName" placeholder="Name" value={form.clientName} onChange={handleChange} className="input"/>
-                <input name="clientEmail" placeholder="Email" value={form.clientEmail} onChange={handleChange} className="input"/>
-                <input name="clientPhone" placeholder="Phone" value={form.clientPhone} onChange={handleChange} className="input"/>
+                <input name="clientName" placeholder="Name" value={form.clientName} onChange={handleChange} className="input" required/>
+                <input name="clientEmail" placeholder="Email" value={form.clientEmail} onChange={handleChange} className="input" required/>
+                <input name="clientPhone" placeholder="Phone" value={form.clientPhone} onChange={handleChange} className="input" required/>
             </div>
 
             {/* Address */}
             <div className="stack-sm">
-                <input name="street" placeholder="Street" value={form.street} onChange={handleChange} className="input"/>
-                <input name="city" placeholder="City" value={form.city} onChange={handleChange} className="input"/>
-                <input name="state" placeholder="State" value={form.state} onChange={handleChange} className="input"/>
-                <input name="zip" placeholder="ZIP" value={form.zip} onChange={handleChange} className="input"/>
+                <input name="street" placeholder="Street" value={form.street} onChange={handleChange} className="input" required/>
+                <input name="city" placeholder="City" value={form.city} onChange={handleChange} className="input" required/>
+                <input name="state" placeholder="State" value={form.state} onChange={handleChange} className="input" required/>
+                <input name="zip" placeholder="ZIP" value={form.zip} onChange={handleChange} className="input" required/>
             </div>
             
             {/* Services */}
@@ -129,9 +148,10 @@ export default function QuoteForm({ services }) {
                 ))}
             </div>
 
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" disabled={loading} className={`btn btn-primary ${loading ? "opacity-50 cursor-not-allowed" : ""}`}>
                 {loading ? "Submitting..." : " Submit Request"}
             </button>
         </form>
+        </>
     );
 }
