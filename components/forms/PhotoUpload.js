@@ -15,7 +15,7 @@ export default function PhotoUpload({ jobId, onUpload }) {
         if (!file) return setError('Please select a file.');
 
         const formData = new FormData();
-        formData.append('photo', file);
+        formData.append('file', file);
         formData.append('jobId', jobId);
         
 
@@ -24,12 +24,14 @@ export default function PhotoUpload({ jobId, onUpload }) {
         try {
             const token = localStorage.getItem('token'); //JWT stored on login
 
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, formData, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
-                },
-            });
+            const res = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/upload`,
+                formData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                }
+            );
 
             setFile(null);
 
