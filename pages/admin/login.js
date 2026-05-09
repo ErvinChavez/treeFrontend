@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client/react";
 import { setToken } from "@/utils/auth";
 import { LOGIN_ADMIN } from "@/lib/graphql/mutations/auth";
+import Link from "next/link";
 
 export default function Login() {
     const [form, setForm] = useState({ email: "", password: "" });
@@ -26,7 +27,9 @@ export default function Login() {
 
             {/* Logo */}
             <div className="flex justify-center">
-              <img src="/chavezLogo.png" className="h-12" />
+              <Link href="/">
+                <img src="/chavezLogo.png" alt="Chavez Tree Logo" className="h-12 cursor-pointer" />
+              </Link>
             </div>
 
             <h2 className="text-title text-center">
