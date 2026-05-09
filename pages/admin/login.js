@@ -1,13 +1,21 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client/react";
-import { setToken } from "@/utils/auth";
+import { setToken, getToken } from "@/utils/auth";
 import { LOGIN_ADMIN } from "@/lib/graphql/mutations/auth";
 import Link from "next/link";
 
 export default function Login() {
     const [form, setForm] = useState({ email: "", password: "" });
     const router = useRouter();
+
+    useEffect(() => {
+      const token = getToken();
+
+      if (token) {
+        router.push("/admin");
+      }
+    }, []);
 
     const [loginAdmin, { loading }] = useMutation(LOGIN_ADMIN, {
         onCompleted: (data) => {
