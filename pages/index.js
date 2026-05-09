@@ -50,7 +50,7 @@ export default function Home({ services }) {
             </button>
 
             <button
-              onClick={() => router.push(getToken() ? "/admin" : "/admin/login")}
+              onClick={() => router.push(token ? "/admin" : "/admin/login")}
               className="btn btn-outline"
             >
               Admin Login
