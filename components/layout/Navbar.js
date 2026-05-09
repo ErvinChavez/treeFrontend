@@ -1,5 +1,6 @@
 import { removeToken } from "@/utils/auth";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function NavBar() {
   const router = useRouter();
@@ -16,8 +17,10 @@ export default function NavBar() {
       
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <img src="/chavezLogo.png" alt="Logo" className="h-8 w-8" />
-          <h1 className="text-subtitle">Chavez Tree Service</h1>
+          <Link href="/">
+            <img src="/chavezLogo.png" alt="Chavez Tree Logo" className="h-8 w-8" />
+            <h1 className="text-subtitle">Chavez Tree Service</h1>
+          </Link>
         </div>
      
 
