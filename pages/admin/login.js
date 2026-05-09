@@ -10,10 +10,12 @@ export default function Login() {
     const router = useRouter();
 
     useEffect(() => {
-      if (getToken()) {
+      const token = getToken();
+
+      if (token) {
         router.replace("/admin");
       }
-    }, []);
+    }, [router]);
 
     const [loginAdmin, { loading }] = useMutation(LOGIN_ADMIN, {
         onCompleted: (data) => {
