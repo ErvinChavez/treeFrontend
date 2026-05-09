@@ -5,7 +5,11 @@ import { getToken } from "@/utils/auth";
 
 export default function Home({ services }) {
   const router = useRouter();
-  const token = getToken();
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    setToken(getToken());
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

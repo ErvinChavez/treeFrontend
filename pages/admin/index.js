@@ -9,24 +9,20 @@ export default function AdminDashboard() {
     const router = useRouter();
 
     // protect route
-    const [checkedAuth, setCheckedAuth] = useState(false);
+    const auth = isAuthenticated();
 
     useEffect(() => {
-        const valid = isAuthenticated();
-
-        if (!valid) {
-            router.push("/admin/login");
-        } else {
-        setCheckedAuth(true);
-        }
-    }, []);
+        if (!auth) {
+            router.replace("/admin/login");
+        } 
+    }, [auth, router]);
 
     const { data, loading, error } = useQuery(GET_DASHBOARD, {
-        skip: !checkedAuth,
+        skip: !auth,
     });
 
 
-    if (!checkedAuth) return null;
+    if (!auth) return null;
     if (loading) return <p className="p-6">Loading dashboard...</p>
     if (error) return <p className="p-6 text-red-500">Error loading dashboard</p>
 
