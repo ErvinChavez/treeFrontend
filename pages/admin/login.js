@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client/react";
 import { setToken, getToken } from "@/utils/auth";
@@ -10,10 +10,8 @@ export default function Login() {
     const router = useRouter();
 
     useEffect(() => {
-      const token = getToken();
-
-      if (token) {
-        router.push("/admin");
+      if (getToken()) {
+        router.replace("/admin");
       }
     }, []);
 

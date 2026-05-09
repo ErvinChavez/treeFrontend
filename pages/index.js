@@ -5,11 +5,7 @@ import { getToken } from "@/utils/auth";
 
 export default function Home({ services }) {
   const router = useRouter();
-  const [token, setToken] = useState(null);
-
-  useEffect(() => {
-    setToken(getToken());
-  }, []);
+  const token = getToken();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -54,10 +50,10 @@ export default function Home({ services }) {
             </button>
 
             <button
-              onClick={() => router.push(token ? "/admin" : "/admin/login")}
+              onClick={() => router.push(getToken() ? "/admin" : "/admin/login")}
               className="btn btn-outline"
             >
-              {token ? "Dashboard" : "Admin Login"}
+              Admin Login
             </button>
           </div>
         </div>
