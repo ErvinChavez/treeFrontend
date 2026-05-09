@@ -17,7 +17,7 @@ export default function NavBar() {
       
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <Link href="/">
+          <Link href="/" className="flex items-center gap-3">
             <img src="/chavezLogo.png" alt="Chavez Tree Logo" className="h-8 w-8" />
             <h1 className="text-subtitle">Chavez Tree Service</h1>
           </Link>
