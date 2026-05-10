@@ -44,20 +44,20 @@ export default function AdminDashboard() {
             
                 {/* Metrics */}
                 <div className="section">
-                    <div className="section-grid md:grid-cols-4">
-                        <div className="card">
+                    <div className="section-grid sm:grid-cols-2 md:grid-cols-4">
+                        <div className="card stack-xs">
                             <p className="text-muted">Total Jobs</p>
                             <p className="text-title">{data?.totalJobs || 0}</p>
                         </div>
-                        <div className="card">
+                        <div className="card stack-xs">
                             <p className="text-muted">Total Clients</p>
                             <p className="text-title">{data?.totalClients || 0}</p>
                             </div>
-                        <div className="card">
+                        <div className="card stack-xs">
                             <p className="text-muted">Avg Rating</p>
                             <p className="text-title">{data?.averageRating ? data.averageRating.toFixed(1) : "0.0"}</p>
                         </div>
-                        <div className="card">
+                        <div className="card stack-xs">
                             <p className="text-muted">Active Jobs</p>
                             <p className="text-title">
                             {activeJobs}
@@ -72,7 +72,7 @@ export default function AdminDashboard() {
 
                 <div className="section-body">
                     {(data?.jobsByStatus || []).map((item) => (
-                        <div key={item.status} className="card flex justify-between items-center">
+                        <div key={item.status} className="card flex items-center justify-between gap-4">
                             <span className="text-body capitalize">
                                 {item.status.replaceAll("_", " ")}
                             </span>
