@@ -89,7 +89,7 @@ body {
 }
 
 .card-footer {
-  @apply mt-3 flex justify-end gap-2;
+  @apply mt-3 flex flex-col sm:flex-row justify-end gap-2;
 }
 
 .card-title {
