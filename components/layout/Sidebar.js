@@ -12,7 +12,7 @@ export default function SideBar() {
     }`;
 
   return (
-    <div className="w-64 bg-brand-dark text-white min-h-screen p-4 flex flex-col">
+    <div className="w-full md:w-64 bg-brand-dark text-white md:min-h-screen p-4 flex flex-col">
 
       {/* Header */}
       <div className="mb-6">
