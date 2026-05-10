@@ -82,7 +82,7 @@ export default function ServicesAdmin() {
           <h2 className="section-title">Add Service</h2>
 
           <div className="section-card">
-            <div className="form-row">
+            <div className="stack-sm">
 
               <input
                 placeholder="Service name"
@@ -105,7 +105,7 @@ export default function ServicesAdmin() {
                 className="input"
               />
               
-              <button onClick={handleAdd} className="btn btn-primary">
+              <button onClick={handleAdd} className="btn btn-primary w-full md:w-auto">
                 Add
               </button>
 
@@ -199,7 +199,7 @@ export default function ServicesAdmin() {
             </div>
           </div>
         )}
-        
+
       </div>
     </AdminLayout>
   );

@@ -44,21 +44,19 @@ export default function Login() {
               Admin Login
             </h2>
 
-            <div>
-              <input 
-                type="email"
-                placeholder="Email"
-                className="input"
-                onChange={(e) => setForm({...form, email: e.target.value })}
-              />
+            <input 
+              type="email"
+              placeholder="Email"
+              className="input"
+              onChange={(e) => setForm({...form, email: e.target.value })}
+            />
 
-              <input 
-                type="password"
-                placeholder="Password"
-                className="input"
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-              />
-            </div>
+            <input 
+              type="password"
+              placeholder="Password"
+              className="input"
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+            />
 
             <button className="btn btn-primary w-full">
                 {loading ? "Logging in..." : " Login"}
