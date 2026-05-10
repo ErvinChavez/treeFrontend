@@ -9,7 +9,7 @@ export default function AdminLayout({ children }) {
       <div className="flex-1 flex flex-col">
         <NavBar />
 
-        <main className="page-padding w-full">
+        <main className="page-padding app-container">
           {children}
         </main>
       </div>
