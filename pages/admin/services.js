@@ -73,32 +73,44 @@ export default function ServicesAdmin() {
   return (
     <AdminLayout>
       <div className="stack">
-        <h1 className="page-title">Manage Services</h1>
+        <div>
+          <h1 className="page-title">Manage Services</h1>
+        </div>
+        
+        {/* ADD Service */}
+        <div className="section">
+          <h2 className="section-title">Add Service</h2>
 
-        {/* ADD NEW */}
-        <div className="section-card flex flex-col md:flex-row gap-2">
-          <input
-            placeholder="Service name"
-            value={newService.name}
-            onChange={(e) =>
-              setNewService({ ...newService, name: e.target.value })
-            }
-            className="input"
-          />
-          <input
-            placeholder="Description"
-            value={newService.description}
-            onChange={(e) =>
-              setNewService({
-                ...newService,
-                description: e.target.value,
-              })
-            }
-            className="input"
-          />
-          <button onClick={handleAdd} className="btn btn-primary">
-            Add
-          </button>
+          <div className="section-card">
+            <div className="form-row">
+
+              <input
+                placeholder="Service name"
+                value={newService.name}
+                onChange={(e) =>
+                  setNewService({ ...newService, name: e.target.value })
+                }
+                className="input"
+              />
+
+              <input
+                placeholder="Description"
+                value={newService.description}
+                onChange={(e) =>
+                  setNewService({
+                    ...newService,
+                    description: e.target.value,
+                  })
+                }
+                className="input"
+              />
+              
+              <button onClick={handleAdd} className="btn btn-primary">
+                Add
+              </button>
+
+            </div>
+          </div>
         </div>
 
         {/* LIST */}
@@ -106,38 +118,36 @@ export default function ServicesAdmin() {
           <h2 className="section-title">Services</h2>
 
           <div className="section-body">
-            <div className="grid gap-4">
-              {services.map((s) => (
-                <div key={s.id} className="card card-interactive">
+            {services.map((s) => (
+              <div key={s.id} className="card card-interactive">
 
-                  <p className="text-subtitle">{s.name}</p>
-                  <p className="text-muted">{s.description}</p>
+                <p className="text-subtitle">{s.name}</p>
+                <p className="text-muted">{s.description}</p>
 
-                  <div className="card-footer">
-                    <button
-                      onClick={() =>
-                        setEditService({
-                          id: Number(s.id),
-                          name: s.name,
-                          description: s.description,
-                        })
-                      }
-                      className="btn btn-secondary"
-                    >
-                      Edit
-                    </button>
+                <div className="card-footer">
+                  <button
+                    onClick={() =>
+                      setEditService({
+                        id: Number(s.id),
+                        name: s.name,
+                        description: s.description,
+                      })
+                    }
+                    className="btn btn-secondary"
+                  >
+                    Edit
+                  </button>
 
-                    <button
-                      onClick={() => handleDelete(Number(s.id))}
-                      className="btn btn-danger"
-                    >
-                      Delete
-                    </button>
-                  </div>
-             
+                  <button
+                    onClick={() => handleDelete(Number(s.id))}
+                    className="btn btn-danger"
+                  >
+                    Delete
+                  </button>
                 </div>
-              ))} 
-            </div>
+             
+              </div>
+            ))} 
           </div>
         </div>
 
@@ -149,24 +159,26 @@ export default function ServicesAdmin() {
 
               <h2 className="text-title">Edit Service</h2>
 
-              <input
-                value={editService.name}
-                onChange={(e) =>
-                  setEditService({ ...editService, name: e.target.value })
-                }
-                className="input"
-              />
+              <div className="stack-xs">
+                <input
+                  value={editService.name}
+                  onChange={(e) =>
+                    setEditService({ ...editService, name: e.target.value })
+                  }
+                  className="input"
+                />
 
-              <input
-                value={editService.description}
-                onChange={(e) =>
-                  setEditService({
-                    ...editService,
-                    description: e.target.value,
-                  })
-                }
-                className="input"
-              />
+                <input
+                  value={editService.description}
+                  onChange={(e) =>
+                    setEditService({
+                      ...editService,
+                      description: e.target.value,
+                    })
+                  }
+                  className="input"
+                />
+              </div>
 
               <div className="card-footer">
                 <button
@@ -183,9 +195,11 @@ export default function ServicesAdmin() {
                   Save
                 </button>
               </div>
+
             </div>
           </div>
         )}
+        
       </div>
     </AdminLayout>
   );

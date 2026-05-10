@@ -36,34 +36,35 @@ export default function AdminDashboard() {
 
     return (
         <AdminLayout>
-        <div className="stack">
-            <h1 className="page-title">Dashboard</h1>
+            <div className="stack">
             
-            {/* Top Metrics */}
-            <div className="grid gap-4 md:grid-cols-4">
-
-                <div className="card">
-                    <p className="text-muted">Total Jobs</p>
-                    <p className="text-title">{data?.totalJobs || 0}</p>
+                <div>
+                    <h1 className="page-title">Dashboard</h1>
                 </div>
-
-                <div className="card">
-                    <p className="text-muted">Total Clients</p>
-                    <p className="text-title">{data?.totalClients || 0}</p>
+            
+                {/* Metrics */}
+                <div className="section">
+                    <div className="section-grid md:grid-cols-4">
+                        <div className="card">
+                            <p className="text-muted">Total Jobs</p>
+                            <p className="text-title">{data?.totalJobs || 0}</p>
+                        </div>
+                        <div className="card">
+                            <p className="text-muted">Total Clients</p>
+                            <p className="text-title">{data?.totalClients || 0}</p>
+                            </div>
+                        <div className="card">
+                            <p className="text-muted">Avg Rating</p>
+                            <p className="text-title">{data?.averageRating ? data.averageRating.toFixed(1) : "0.0"}</p>
+                        </div>
+                        <div className="card">
+                            <p className="text-muted">Active Jobs</p>
+                            <p className="text-title">
+                            {activeJobs}
+                            </p>
+                        </div>
+                    </div>
                 </div>
-               
-                <div className="card">
-                    <p className="text-muted">Avg Rating</p>
-                    <p className="text-title">{data?.averageRating ? data.averageRating.toFixed(1) : "0.0"}</p>
-                </div>
-               
-                <div className="card">
-                    <p className="text-muted">Active Jobs</p>
-                    <p className="text-title">
-                        {activeJobs}
-                    </p>
-                </div>
-            </div>
 
             {/* Jobs by Status */}
             <div className="section">
