@@ -131,7 +131,7 @@ body {
 
 /* Layout */
 .page-padding {
-  @apply py-6;
+  @apply py-6 space-y-6;
 }
 
 .page-title {
@@ -160,7 +160,15 @@ body {
 }
 
 .section-card {
-  @apply card mt-4;
+  @apply card mt-6 space-y-4;
+}
+
+.section-grid {
+  @apply grid gap-4;
+}
+
+.section-header {
+  @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2;
 }
 
 .section-title {

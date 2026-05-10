@@ -50,37 +50,32 @@ export default function Employees() {
       <div className="stack">
 
         {/* Header */}
-        <header>
+        <div>
           <h1 className="page-title">Employees</h1>
           <p className="text-muted">Manage your team members</p>
-        </header>
+        </div>
 
-        {/* Form Section */}
-        <section className="section-card">
+        {/* Add Employee */}
+        <div className="section">
           <h2 className="section-title">Add Employee</h2>
 
-          <div className="section-body">
+          <div className="section-card">
             <EmployeeForm onCreate={handleCreate} />
           </div>
-        </section>
+        </div>
 
-        {/* List Section */}
-        <section className="section">
+        {/* List*/}
+        <div className="section">
           <div className="section-header">
             <h2 className="section-title">Team</h2>
-            <span className="text-caption">
-              {data?.employees?.length || 0} employees
-            </span>
           </div>
 
-          <div className="section-body">
-            <div className="grid gap-4 md:grid-cols-2">
-              {data?.employees?.map((emp) => (
+          <div className="section-grid md:grid-cols-2">
+            {data?.employees?.map((emp) => (
               <EmployeeCard key={emp.id} employee={emp}/>
             ))}
-            </div>
           </div>
-        </section>
+        </div>
 
       </div>
     </AdminLayout>
