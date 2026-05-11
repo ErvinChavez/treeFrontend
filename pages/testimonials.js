@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import FeedbackCard from "@/components/cards/FeedbackCard";
+import Head from "next/head";
 
 //GraphQL query
 const GET_FEEDBACK = gql`
@@ -27,14 +28,28 @@ export default function Testimonials() {
     .filter(f => f && f.rating > 0);
 
   return (
-    <div className="section max-w-4xl mx-auto">
-      <h1 className="page-title">Customer Testimonials</h1>
+    <>
+      <Head>
+        <title>Customer Reviews & Testimonials | Chavez Tree Service</title>
 
-      <div className="grid gap-4">
-        {feedbacks.map((feedback, i) => (
-          <FeedbackCard key={i} feedback={feedback} />
-        ))}
+        <meta
+          name="description"
+          content="Read real customer reviews and testimonials for Chavez Tree Service. Trusted tree removal and trimming services in Atlanta, Lawrenceville, and Gwinnett County."
+        />
+      </Head>
+      <div className="section max-w-4xl mx-auto">
+        <h1 className="page-title">Customer Testimonials</h1>
+
+        <p className="text-muted max-w-2xl mx-auto mb-6 text-center">
+          Here’s what our customers across Atlanta, Gwinnett County, and North Georgia say about our tree removal, trimming, and emergency services.
+        </p>
+
+        <div className="grid gap-4">
+          {feedbacks.map((feedback, i) => (
+            <FeedbackCard key={i} feedback={feedback} />
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
 import { SUBMIT_FEEDBACK } from "@/lib/graphql/mutations/jobs";
+import Head from "next/head";
 
 export default function ReviewPage() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function ReviewPage() {
     setReviewToken(token);
     setUserRating(numRating);
     setLoading(false);
-  }, [router.isReady]);
+  }, [router.isReady, router.query]);
 
   
 
@@ -66,91 +67,105 @@ export default function ReviewPage() {
 };
 
   if (!router.isReady || loading) {
-    return <div className="section text-center">Loading...</div>;
+    return <div className="section text-center">Loading your feedback form...</div>;
   }
 
   const isPositive = Number(userRating) >= 4;
 
   if (submitted) {
     return (
-      <div className="section max-w-xl mx-auto">
-        <div className="card text-center stack">
+      <>
+        <Head>
+          <title>Feedback Submitted | Chavez Tree Service</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Head>
 
-          <h2 className="text-title">
-            {isPositive ? "Thank you! 🙌" : "Thank you for your feedback"}
-          </h2>
+        <div className="section max-w-xl mx-auto">
+          <div className="card text-center stack">
 
-          <p className="text-muted">
-            {isPositive
-              ? "We’re really glad you had a great experience."
-              : "We appreciate you helping us improve our service."}
-          </p>
-          
-          <p className="text-subtitle">
-            {isPositive
-              ? "Would you mind sharing your experience on Google?"
-              : "If you’d like, you can also leave a public review on Google."}
-          </p>
+            <h2 className="text-title">
+              {isPositive ? "Thank you! 🙌" : "Thank you for your feedback"}
+            </h2>
 
-          <a
-            href="https://g.page/r/CeBcAA5Lxo0aEBM/review"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`btn ${isPositive ? "btn-primary" : "btn-accent"}`}
-          >
-            {isPositive
-              ? "Leave a Google Review ⭐"
-              : "Leave Feedback on Google"}
-          </a>
+            <p className="text-muted">
+              {isPositive
+                ? "We’re really glad you had a great experience."
+                : "We appreciate you helping us improve our service."}
+            </p>
+            
+            <p className="text-subtitle">
+              {isPositive
+                ? "Would you mind sharing your experience on Google?"
+                : "If you’d like, you can also leave a public review on Google."}
+            </p>
 
+            <a
+              href="https://g.page/r/CeBcAA5Lxo0aEBM/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`btn ${isPositive ? "btn-primary" : "btn-accent"}`}
+            >
+              {isPositive
+                ? "Leave a Google Review ⭐"
+                : "Leave Feedback on Google"}
+            </a>
+
+          </div>
         </div>
-      </div>
+      </>
     );
 }
 
   return (
-    <div className="section max-w-xl mx-auto">
-      <div className="card stack text-center">
+    <>
+      <Head>
+        <title>Leave Feedback | Chavez Tree Service</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
 
-        <h2 className="text-title">
-          {isPositive
-            ? "We're glad you had a great experience!"
-            : "We’re sorry we didn’t meet expectations."}
-        </h2>
-        
-        <p className="text-muted">
-          {isPositive
-            ? "Feel free to share any additional comments."
-            : "Please tell us what we could improve."}
-        </p>
-        
-        {error && (
-          <div className="status-error">
-            {error}
-          </div>
-        )}
+      <div className="section max-w-xl mx-auto">
+        <div className="card stack text-center">
 
-        <form onSubmit={handleSubmit} className="stack-sm">
+          <h2 className="text-title">
+            {isPositive
+              ? "We're glad you had a great experience!"
+              : "We’re sorry we didn’t meet expectations."}
+          </h2>
+          
+          <p className="text-muted">
+            {isPositive
+              ? "Feel free to share any additional comments."
+              : "Please tell us what we could improve."}
+          </p>
+          
+          {error && (
+            <div className="status-error">
+              {error}
+            </div>
+          )}
 
-          <textarea
-            value={comment}
-            onChange={(e) => {setComment(e.target.value); setError("");}}
-            rows={5}
-            placeholder="Your feedback..."
-            required
-            className="input resize-none"
-          />
+          <form onSubmit={handleSubmit} className="stack-sm">
 
-          <button
-            type="submit"
-            disabled={submitted}
-            className="btn btn-primary w-full"
-          >
-            Send Feedback
-          </button>
-        </form>
+            <textarea
+              value={comment}
+              onChange={(e) => {setComment(e.target.value); setError("");}}
+              rows={5}
+              placeholder="Your feedback..."
+              required
+              className="input resize-none"
+            />
+
+            <button
+              type="submit"
+              disabled={submitted}
+              className="btn btn-primary w-full"
+            >
+              Send Feedback
+            </button>
+          </form>
+        </div>
+      
       </div>
-    
-    </div>
+    </>
   );
 }

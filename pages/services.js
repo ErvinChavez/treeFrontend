@@ -1,21 +1,43 @@
 import { createApolloClient } from "../lib/apollo";
 import { GET_SERVICES } from "@/lib/graphql/queries/services";
 import ServiceCard from "@/components/cards/ServiceCard";
+import Head from "next/head";
 
 
 //the component receives `services` as a prop from getStaticProps
 export default function Services({ services }) {
   return (
-    <div className="section">
-      <h1 className="page-title">Our Services</h1>
+    <>
+      <Head>
+        <title>Tree Services in Atlanta & Gwinnett County | Chavez Tree Service</title>
 
-      {/*Display each service in a grid */}
-      <div className="grid gap-4 md:grid-cols-2">
-        {services.map((service) => (
-          <ServiceCard key={service.id} service={service}/>
-        ))}
+        <meta
+          name="description"
+          content="Professional tree removal, tree trimming, stump grinding, land clearing, and emergency tree services in Atlanta, Lawrenceville, and Gwinnett County."
+        />
+      </Head>
+
+      <div className="section">
+        <h1 className="page-title">Our Services</h1>
+
+        <p className="text-muted max-w-2xl mb-6">
+          Chavez Tree Service provides professional tree removal, tree trimming,
+          stump grinding, land clearing, and emergency tree services throughout
+          Atlanta, Gwinnett County, and North Georgia. We focus on safe, efficient,
+          and affordable tree care for residential and commercial properties.
+
+          During colder months, we also offer firewood delivery in the Metro
+          Atlanta area, depending on seasonal availability.
+        </p>
+        
+        {/*Display each service in a grid */}
+        <div className="grid gap-4 md:grid-cols-2">
+          {services.map((service) => (
+            <ServiceCard key={service.id} service={service}/>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
