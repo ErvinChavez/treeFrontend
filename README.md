@@ -1,68 +1,102 @@
-# ChavezTree Frontend
+# Chavez Tree Service Frontend
 
-This is the frontend application for ChavezTree Tree Service, built using Next.js and Apollo Client.
+Frontend application for the Chavez Tree Service platform.
 
-It provides the customer-facing experience for requesting quotes, viewing job updates, and submitting reviews.
+Built with Next.js, React, Apollo Client, and Tailwind CSS.
 
-It also includes an internal admin dashboard for managing jobs, services, employees, and customer feedback.
+This application provides:
+- customer-facing quote request flows
+- review submission system
+- responsive business website
+- secure admin dashboard for managing operations
 
----
-
-## Features
-
-### Customer Side
-- Quote request form
-- Review system via email links
-- Feedback submission page (`/review`)
-
-### Admin Side
-- Job dashboard
-- Status updates (pending → completed)
-- Employee assignment
-- Service management
-- Photo uploads
-- Feedback viewing (read-only)
+The frontend connects to a custom GraphQL backend API powering the full business workflow.
 
 ---
 
-## Review System Flow
+# Features
 
-1. Customer receives review request email after job completion
-2. Email contains secure, tokenized review links (1–5 stars)
-3. Customer is redirected to `/review` page
-4. Customer submits feedback on-site
-5. Backend stores feedback and sends notifications if rating is low
-6. High ratings are encouraged to leave a Google review
+## Customer Experience
+
+### Quote Request System
+- Customer quote request form
+- Service selection support
+- Mobile-friendly form experience
+- Real-time submission flow
+
+### Customer Reviews
+- Secure tokenized review links
+- Star rating system
+- Feedback submission page
+- Google review encouragement for positive ratings
+
+### Business Website
+- Responsive marketing pages
+- Testimonials page
+- Service presentation
+- Contact and call-to-action sections
 
 ---
 
-## Tech Stack
+# Admin Dashboard
 
+## Job Management
+- View and manage customer jobs
+- Track workflow statuses
+- Update job progress
+- Review customer information
+
+## Employee & Service Management
+- Assign employees to jobs
+- Manage available services
+- Track job-service relationships
+
+## Media Management
+- Upload and manage job photos
+- Display completed work imagery
+
+## Feedback Management
+- View customer reviews
+- Monitor low-rating alerts
+- Track customer satisfaction
+
+---
+
+# Review Workflow
+
+1. Job is marked completed by admin
+2. Backend sends secure review request email
+3. Customer opens tokenized review link
+4. Customer submits feedback through `/review`
+5. Positive reviews encourage Google review submission
+6. Low ratings notify business internally
+
+---
+
+# Tech Stack
+
+## Frontend
 - Next.js
 - React
 - Apollo Client
 - Tailwind CSS
 
+## API & Backend Integration
+- GraphQL API
+- JWT Authentication
+
+## Deployment
+- Vercel (Frontend Hosting)
+- Cloudflare DNS
+
 ---
 
-## 📁 Project Structure
-- components/
-- lib/
-- pages/
-- public/
-- styles/
-- utils/
----
-
-## ▶️ Running the App
+# Project Structure
 
 ```bash
-npm install
-npm run dev
-
----
-
-## API Connection
-
-Make sure the backend is running at:
-http://localhost:4000/graphql
+components/
+lib/
+pages/
+public/
+styles/
+utils/
