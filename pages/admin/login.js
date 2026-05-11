@@ -7,6 +7,7 @@ import Link from "next/link";
 
 export default function Login() {
     const [form, setForm] = useState({ email: "", password: "" });
+    const [error, setError] = useState("");
     const router = useRouter();
 
     useEffect(() => {
@@ -22,6 +23,9 @@ export default function Login() {
             setToken(data.loginAdmin); //save JWT
             router.push("/admin"); //redirect
         },
+        onError: (err) => {
+          setError(err.message);
+        }
     });
 
     const handleSubmit = (e) => {
@@ -48,18 +52,30 @@ export default function Login() {
               type="email"
               placeholder="Email"
               className="input"
-              onChange={(e) => setForm({...form, email: e.target.value })}
+              onChange={(e) => {
+                setForm({...form, email: e.target.value });
+                setError("");
+              }}
             />
 
             <input 
               type="password"
               placeholder="Password"
               className="input"
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              onChange={(e) => {
+                setForm({ ...form, password: e.target.value });
+                setError("");
+              }}
             />
 
-            <button className="btn btn-primary w-full">
-                {loading ? "Logging in..." : " Login"}
+            {error && (
+              <p className="text-red-500 text-sm text-center">
+                {error}
+              </p>
+            )}
+
+            <button className="btn btn-primary w-full" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
             </button>
           </form>
         </div>
