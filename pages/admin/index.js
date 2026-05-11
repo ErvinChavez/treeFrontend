@@ -38,6 +38,7 @@ export default function AdminDashboard() {
         <AdminLayout>
             <div className="stack">
             
+                {/* Header */}
                 <div>
                     <h1 className="page-title">Dashboard</h1>
                 </div>
