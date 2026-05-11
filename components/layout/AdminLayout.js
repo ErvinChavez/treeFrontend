@@ -6,7 +6,7 @@ export default function AdminLayout({ children }) {
     <div className="flex min-h-screen bg-brand-light">
       <SideBar />
 
-      <div className="flex-1 min-w-0 flex flex-col">
+      <div className="flex-1 flex flex-col">
         <NavBar />
 
         <main className="page-padding app-container">
