@@ -2,6 +2,7 @@
 import '../styles/globals.css'; // import Tailwind and any global CSS
 import { ApolloProvider } from '@apollo/client'; //the wrapper component
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 import ClientNavbar from "@/components/layout/ClientNavbar";
 import client from "../lib/apollo"; //the bridge with apollo.js
@@ -18,6 +19,10 @@ export default function App({ Component, pageProps }) {
     //This causes the client connection to every single page and component in your project
     <ApolloProvider client={client}>
       <>
+        <Head>
+          <link rel="icon" type="image/png" href="/favicon.png" />
+        </Head>
+        
         {!isAdmin && <ClientNavbar/>}
 
         <main className={!isAdmin ? "pb-20" : ""}>
