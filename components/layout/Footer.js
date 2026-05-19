@@ -19,10 +19,30 @@ export default function Footer() {
         </p>
 
         {/* Center */}
-        <div className="flex gap-6 text-sm">
-          <a href="/services" className="hover:text-brand-accent transition-base">Services</a>
-          <a href="/quote" className="hover:text-brand-accent transition-base">Get a Quote</a>
-          <a href="/testimonials" className="hover:text-brand-accent transition-base">Testimonials</a>
+        <div className="flex flex-col items-center gap-2 text-sm">
+          {/* Main links */}
+          <div className="flex gap-6">
+            <a href="/services" className="hover:text-brand-accent transition-base">
+              Services
+            </a>
+            <a href="/quote" className="hover:text-brand-accent transition-base">
+              Get a Quote
+            </a>
+            <a href="/testimonials" className="hover:text-brand-accent transition-base">
+              Testimonials
+            </a>
+          </div>
+
+          {/* Legal links (secondary row) */}
+          <div className="flex gap-4 text-xs text-white/50">
+            <a href="/privacy-policy" className="hover:text-white/80 transition-base">
+              Privacy Policy
+            </a>
+            <span>•</span>
+            <a href="/terms" className="hover:text-white/80 transition-base">
+              Terms
+            </a>
+          </div>
         </div>
 
         {/* Right */}
