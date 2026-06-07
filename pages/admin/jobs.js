@@ -1,23 +1,24 @@
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useEffect, useState } from "react";
-import  { useRouter } from  "next/router";
+import { useRouter } from "next/router";
 import { isAuthenticated } from "@/utils/auth";
 
 import AdminLayout from "@/components/layout/AdminLayout";
 import JobCard from "@/components/cards/JobCard";
 
-import { GET_JOBS} from "@/lib/graphql/queries/jobs";
+import { GET_JOBS } from "@/lib/graphql/queries/jobs";
 import { GET_EMPLOYEES } from "@/lib/graphql/queries/employees";
 import { SEND_REVIEW_REQUEST } from "@/lib/graphql/mutations/reviews";
 import {
   UPDATE_JOB_STATUS,
   ASSIGN_EMPLOYEES,
   SUBMIT_FEEDBACK,
+  UPDATE_JOB_TOTAL_AMOUNT,
 } from "@/lib/graphql/mutations/jobs";
 
 export default function Jobs() {
   const router = useRouter();
-  
+
   //protect route
   const [checkedAuth, setCheckedAuth] = useState(false);
 
@@ -27,14 +28,13 @@ export default function Jobs() {
     if (!valid) {
       router.push("/admin/login");
     } else {
-    setCheckedAuth(true);
+      setCheckedAuth(true);
     }
   }, []);
 
   const { data, loading, error, refetch } = useQuery(GET_JOBS, {
     skip: !checkedAuth,
   });
-    
 
   const { data: empData } = useQuery(GET_EMPLOYEES, {
     skip: !checkedAuth,
@@ -64,7 +64,7 @@ export default function Jobs() {
 
       if (updated?.status === "completed") {
         console.log("🚀 Calling sendReviewRequest");
-        
+
         sendReviewRequest({
           variables: { jobId: Number(updated.id) },
         });
@@ -77,13 +77,13 @@ export default function Jobs() {
 
       //Read existing jobs from cache
       const existing = cache.readQuery({ query: GET_JOBS });
-      if(!existing?.jobs) return;
+      if (!existing?.jobs) return;
 
       // Map over jobs and update the one that changed
       const updatedJobs = existing.jobs.map((job) =>
         job.id === updateJobStatus.id
           ? { ...job, status: updateJobStatus.status }
-          : job
+          : job,
       );
 
       // Write updated jobs back to cache
@@ -91,13 +91,20 @@ export default function Jobs() {
         query: GET_JOBS,
         data: { jobs: updatedJobs },
       });
+    },
+  });
 
+  const [updateJobTotalAmount] = useMutation(UPDATE_JOB_TOTAL_AMOUNT, {
+    onCompleted: () => {
+      refetch();
+    },
+    onError: (err) => {
+      console.error("Error updating job total amount:", err);
     },
   });
 
   const [assignEmployees] = useMutation(ASSIGN_EMPLOYEES, {
-    update(cache, { data }) {
-    },
+    update(cache, { data }) {},
   });
 
   const [submitFeedback] = useMutation(SUBMIT_FEEDBACK, {
@@ -109,7 +116,7 @@ export default function Jobs() {
       const updatedJobs = existing.jobs.map((job) =>
         job.id === submitFeedback.id
           ? { ...job, feedback: submitFeedback }
-          : job
+          : job,
       );
 
       cache.writeQuery({
@@ -120,7 +127,7 @@ export default function Jobs() {
   });
 
   //sync backend . local state
-  useEffect(()=> {
+  useEffect(() => {
     if (data?.jobs) {
       const initial = {};
 
@@ -132,10 +139,10 @@ export default function Jobs() {
     }
   }, [data]);
 
-//UI States
+  //UI States
   if (!checkedAuth) return null;
   if (loading) return <p className="p-6">Loading jobs...</p>;
-  if (error) return <p className="p-6 text-red-500">Error loading jobs</p>;  
+  if (error) return <p className="p-6 text-red-500">Error loading jobs</p>;
 
   const jobs = data?.jobs || [];
 
@@ -156,57 +163,50 @@ export default function Jobs() {
     }
   });
 
-  
-
-  
-
   return (
     <AdminLayout>
-        <div className="stack">
+      <div className="stack">
+        {/* Header */}
+        <div>
+          <h1 className="page-title">Jobs</h1>
+          <p className="text-muted">Track and manage all jobs</p>
+        </div>
 
-          {/* Header */}
-          <div>
-            <h1 className="page-title">Jobs</h1>
-            <p className="text-muted">Track and manage all jobs</p>
-          </div>
+        {/* Job Groups */}
+        {Object.entries(groupedJobs).map(([status, jobs]) => {
+          if (jobs.length === 0) return null;
 
-          {/* Job Groups */}
-          {Object.entries(groupedJobs).map(([status, jobs]) => {
-            if (jobs.length === 0) return null;
+          return (
+            <div key={status} className="section">
+              {/* Section Header */}
+              <div className="flex items-center justify-between">
+                <h2 className="section-title">
+                  {status.replaceAll("_", " ").toUpperCase()}
+                </h2>
 
-            return (
-              <div key={status} className="section">
-
-                {/* Section Header */}
-                <div className="flex items-center justify-between">
-                  <h2 className="section-title">
-                    {status.replaceAll("_", " ").toUpperCase()}
-                  </h2>
-
-                  <span className="text-caption">
-                    {jobs.length} jobs
-                  </span>
-                </div>   
-
-                {/* Jobs */}
-                <div className="grid gap-4">
-                  {jobs.map((job) => (
-                    <JobCard
-                      key={job.id}
-                      job={job}
-                      updateStatus={updateStatus}
-                      submitFeedback={submitFeedback}
-                      assignEmployees={assignEmployees}
-                      empData={empData}
-                      selectedEmployees={selectedEmployees}
-                      setSelectedEmployees={setSelectedEmployees}
-                      refetch={refetch}
-                    />
-                  ))}
-                </div>
+                <span className="text-caption">{jobs.length} jobs</span>
               </div>
-            );
-          })} 
+
+              {/* Jobs */}
+              <div className="grid gap-4">
+                {jobs.map((job) => (
+                  <JobCard
+                    key={job.id}
+                    job={job}
+                    updateStatus={updateStatus}
+                    updateJobTotalAmount={updateJobTotalAmount}
+                    submitFeedback={submitFeedback}
+                    assignEmployees={assignEmployees}
+                    empData={empData}
+                    selectedEmployees={selectedEmployees}
+                    setSelectedEmployees={setSelectedEmployees}
+                    refetch={refetch}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </AdminLayout>
   );
