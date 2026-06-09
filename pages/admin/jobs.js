@@ -47,6 +47,7 @@ export default function Jobs() {
     onCompleted: (data) => {
       if (data.sendReviewRequest) {
         console.log("Review request sent successfully!");
+        refetch();
       } else {
         console.warn("Review request was already sent or failed.");
       }
@@ -61,14 +62,6 @@ export default function Jobs() {
       const updated = res?.updateJobStatus;
 
       console.log("STATUS UPDATED:", updated);
-
-      if (updated?.status === "completed") {
-        console.log("🚀 Calling sendReviewRequest");
-
-        sendReviewRequest({
-          variables: { jobId: Number(updated.id) },
-        });
-      }
     },
 
     update(cache, { data }) {
@@ -195,6 +188,7 @@ export default function Jobs() {
                     job={job}
                     updateStatus={updateStatus}
                     updateJobTotalAmount={updateJobTotalAmount}
+                    sendReviewRequest={sendReviewRequest}
                     submitFeedback={submitFeedback}
                     assignEmployees={assignEmployees}
                     empData={empData}

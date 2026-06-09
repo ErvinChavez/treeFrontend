@@ -3,12 +3,8 @@ import { useQuery, useMutation } from "@apollo/client/react";
 import { useRouter } from "next/router";
 import { isAuthenticated } from "@/utils/auth";
 import AdminLayout from "@/components/layout/AdminLayout";
-import {
-  GET_SERVICES,
-  CREATE_SERVICE,
-  UPDATE_SERVICE,
-  DELETE_SERVICE,
-} from "@/lib/graphql/queries/services";
+import { GET_SERVICES } from "@/lib/graphql/queries/services";
+import { CREATE_SERVICE, UPDATE_SERVICE, DELETE_SERVICE } from "@/lib/graphql/mutations/services";
 
 export default function ServicesAdmin() {
   const router = useRouter();

@@ -11,6 +11,7 @@ export default function JobCard({
   job,
   updateStatus,
   updateJobTotalAmount,
+  sendReviewRequest,
   assignEmployees,
   empData,
   selectedEmployees,
@@ -76,11 +77,39 @@ export default function JobCard({
           </button>
         </div>
 
-        {job.totalAmount && (
-          <p className="text-sm text-muted">
-            Current total: ${Number(job.totalAmount).toFixed(2)}
-          </p>
-        )}
+          <div className="mt-3 space-y-2">
+            {job.totalAmount && (
+              <p className="text-sm text-muted">
+                Current total: ${Number(job.totalAmount).toFixed(2)}
+              </p>
+            )}
+
+            {job.status === "completed" && job.totalAmount && !job.reviewRequested && (
+              <button
+                type="button"
+                onClick={() =>
+                  sendReviewRequest({
+                    variables: { jobId: Number(job.id) },
+                  })
+                }
+                className="btn btn-primary"
+              >
+                Send Receipt + Review
+              </button>
+            )}
+
+            {job.status === "completed" && !job.totalAmount && (
+              <p className="text-sm text-red-500">
+                Add a job total before sending the receipt and review email.
+              </p>
+            )}
+
+            {job.reviewRequested && (
+              <p className="text-sm text-green-700">
+                Receipt and review email already sent.
+              </p>
+            )}
+          </div>
       </div>
 
       <div className="section">
