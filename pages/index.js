@@ -35,7 +35,7 @@ export default function Home({ services }) {
 
         <meta property="og:image" content="/chavezLogo.png" />
 
-        <meta property="og:url" content="https://yourdomain.com" />
+        <meta property="og:url" content="https://chaveztree.com" />
 
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -94,7 +94,7 @@ export default function Home({ services }) {
                 onClick={() => router.push(getToken() ? "/admin" : "/admin/login")}
                 className="btn btn-outline"
               >
-                Admin Login
+                Staff Sign In
               </button>
             </div>
           </div>
