@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import StatusDropdown from "@/components/forms/StatusDropdown";
 import EmployeeAssignForm from "@/components/forms/EmployeeAssignForm";
@@ -19,6 +19,10 @@ export default function JobCard({
   refetch,
 }) {
   const [totalAmount, setTotalAmount] = useState(job.totalAmount || "");
+
+  useEffect(() => {
+    setTotalAmount(job.totalAmount || "");
+  }, [job.totalAmount]);
 
   const handleSaveTotalAmount = async () => {
     if (totalAmount === "" || Number(totalAmount) < 0) {

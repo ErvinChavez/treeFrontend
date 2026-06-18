@@ -75,8 +75,13 @@ export default function Jobs() {
       // Map over jobs and update the one that changed
       const updatedJobs = existing.jobs.map((job) =>
         job.id === updateJobStatus.id
-          ? { ...job, status: updateJobStatus.status }
-          : job,
+          ? { 
+            ...job, 
+            status: updateJobStatus.status,
+            totalAmount: updateJobStatus.totalAmount ?? job.totalAmount,
+            reviewRequested: updateJobStatus.reviewRequested ?? job.reviewRequested,
+          } 
+          : job
       );
 
       // Write updated jobs back to cache
@@ -88,6 +93,30 @@ export default function Jobs() {
   });
 
   const [updateJobTotalAmount] = useMutation(UPDATE_JOB_TOTAL_AMOUNT, {
+    update(cache, { data }) {
+      const updatedJob = data?.updateTotalAmount;
+      if (!updatedJob) return;
+
+      const existing = cache.readQuery({ query: GET_JOBS });
+      if (!existing?.jobs) return;
+
+      const updatedJobs = existing.jobs.map((job) =>
+        job.id === updatedJob.id
+          ? {
+              ...job,
+              totalAmount: updatedJob.totalAmount,
+              status: updatedJob.status ?? job.status,
+              reviewRequested: updatedJob.reviewRequested ?? job.reviewRequested,
+            }
+          : job
+      );
+
+      cache.writeQuery({
+        query: GET_JOBS,
+        data: { jobs: updatedJobs },
+      });
+    },
+
     onCompleted: () => {
       refetch();
     },
