@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
+import { CombinedGraphQLErrors } from "@apollo/client";
 import { SUBMIT_FEEDBACK } from "@/lib/graphql/mutations/jobs";
 import Head from "next/head";
 
@@ -61,8 +62,13 @@ export default function ReviewPage() {
       setError("");
     } catch (err) {
       console.error(err);
-      const message = err?.graphQLErrors?.[0]?.message || "There was an error submitting your feedback.";
-      setError(message);
+      // Apollo Client 4: GraphQL errors are wrapped in CombinedGraphQLErrors
+      // instead of a `graphQLErrors` array on the error itself. `err.message`
+      // is always safe to read regardless of error type (guaranteed error-like).
+      const message = CombinedGraphQLErrors.is(err)
+        ? err.errors[0]?.message
+        : err?.message;
+      setError(message || "There was an error submitting your feedback.");
     }
 };
 

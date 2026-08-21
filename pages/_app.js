@@ -1,6 +1,7 @@
 // pages/_app.js
 import '../styles/globals.css'; // import Tailwind and any global CSS
-import { ApolloProvider } from '@apollo/client'; //the wrapper component
+ //the wrapper component
+import { ApolloProvider } from "@apollo/client/react";
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
@@ -35,4 +36,4 @@ export default function App({ Component, pageProps }) {
       
     </ApolloProvider>
   );
-};
+}
