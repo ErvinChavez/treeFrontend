@@ -1,6 +1,13 @@
+import SEO from "@/components/common/SEO";
+
 export default function PrivacyPolicy() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
+      <SEO
+        title="Privacy Policy | Chavez Tree Service"
+        description="Privacy policy for Chavez Tree Service, covering how we collect and use information submitted through our website."
+        path="/privacy-policy"
+      />
       <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
 
       <p className="mb-4">

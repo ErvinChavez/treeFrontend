@@ -1,12 +1,16 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
     <footer className="bg-brand-dark text-white mt-12 border-t border-white/10 pb-20 md:pb-0" >
 
       {/* Logo */}
       <div className="flex justify-center pt-6">
-        <img
+        <Image
           src="/chavezLogo.png"
           alt="Chavez Tree Service"
+          width={56}
+          height={56}
           className="h-14 w-auto opacity-90"
         />
       </div>
@@ -52,9 +56,11 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img
+            <Image
               src="/facebookLogo.png"
               alt="Facebook"
+              width={24}
+              height={24}
               className="h-6 w-6 hover:opacity-70 transition-base"
             />
           </a>
@@ -64,9 +70,11 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img
-              src="instagramLogo.png"
+            <Image
+              src="/instagramLogo.png"
               alt="Instagram"
+              width={24}
+              height={24}
               className="h-6 w-6 hover:opacity-70 transition-base"
             />
           </a>

@@ -5,6 +5,7 @@ import { isAuthenticated } from "@/utils/auth";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { GET_SERVICES } from "@/lib/graphql/queries/services";
 import { CREATE_SERVICE, UPDATE_SERVICE, DELETE_SERVICE } from "@/lib/graphql/mutations/services";
+import SEO from "@/components/common/SEO";
 
 export default function ServicesAdmin() {
   const router = useRouter();
@@ -68,6 +69,7 @@ export default function ServicesAdmin() {
 
   return (
     <AdminLayout>
+      <SEO title="Services | Chavez Tree Service Admin" description="Admin dashboard" path="/admin/services" noindex />
       <div className="stack">
         <div>
           <h1 className="page-title">Manage Services</h1>

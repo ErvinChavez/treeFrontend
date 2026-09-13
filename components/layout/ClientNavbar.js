@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ClientNavbar() {
   return (
@@ -7,9 +8,11 @@ export default function ClientNavbar() {
 
         {/* Logo (acts as Home button) */}
         <Link href="/" className="flex items-center gap-2">
-          <img
+          <Image
             src="/chavezLogo.png"
             alt="Chavez Tree Service"
+            width={32}
+            height={32}
             className="h-8 w-8"
           />
           <span className="font-semibold text-brand-dark">

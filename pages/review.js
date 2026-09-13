@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client/react";
 import { CombinedGraphQLErrors } from "@apollo/client";
 import { SUBMIT_FEEDBACK } from "@/lib/graphql/mutations/jobs";
-import Head from "next/head";
+import SEO from "@/components/common/SEO";
 
 export default function ReviewPage() {
   const router = useRouter();
@@ -62,9 +62,6 @@ export default function ReviewPage() {
       setError("");
     } catch (err) {
       console.error(err);
-      // Apollo Client 4: GraphQL errors are wrapped in CombinedGraphQLErrors
-      // instead of a `graphQLErrors` array on the error itself. `err.message`
-      // is always safe to read regardless of error type (guaranteed error-like).
       const message = CombinedGraphQLErrors.is(err)
         ? err.errors[0]?.message
         : err?.message;
@@ -81,10 +78,12 @@ export default function ReviewPage() {
   if (submitted) {
     return (
       <>
-        <Head>
-          <title>Feedback Submitted | Chavez Tree Service</title>
-          <meta name="robots" content="noindex, nofollow" />
-        </Head>
+        <SEO
+          title="Feedback Submitted | Chavez Tree Service"
+          description="Thank you for your feedback."
+          path="/review"
+          noindex
+        />
 
         <div className="section max-w-xl mx-auto">
           <div className="card text-center stack">
@@ -124,10 +123,12 @@ export default function ReviewPage() {
 
   return (
     <>
-      <Head>
-        <title>Leave Feedback | Chavez Tree Service</title>
-        <meta name="robots" content="noindex, nofollow" />
-      </Head>
+      <SEO
+        title="Leave Feedback | Chavez Tree Service"
+        description="Leave feedback about your recent Chavez Tree Service experience."
+        path="/review"
+        noindex
+      />
 
       <div className="section max-w-xl mx-auto">
         <div className="card stack text-center">

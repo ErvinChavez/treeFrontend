@@ -4,6 +4,8 @@ import { useMutation } from "@apollo/client/react";
 import { setToken, getToken } from "@/utils/auth";
 import { LOGIN_ADMIN } from "@/lib/graphql/mutations/auth";
 import Link from "next/link";
+import SEO from "@/components/common/SEO";
+import Image from "next/image";
 
 export default function Login() {
     const [form, setForm] = useState({ email: "", password: "" });
@@ -35,12 +37,13 @@ export default function Login() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-brand-light">
+          <SEO title="Staff Sign In | Chavez Tree Service" description="Admin sign in" path="/admin/login" noindex />
           <form onSubmit={handleSubmit} className="card w-80 stack-sm">
 
             {/* Logo */}
             <div className="flex justify-center">
               <Link href="/">
-                <img src="/chavezLogo.png" alt="Chavez Tree Logo" className="h-12 cursor-pointer" />
+                <Image src="/chavezLogo.png" alt="Chavez Tree Logo" width={48} height={48} className="h-12 w-auto cursor-pointer" />
               </Link>
             </div>
 

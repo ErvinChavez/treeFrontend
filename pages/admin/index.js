@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { isAuthenticated } from "@/utils/auth";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { GET_DASHBOARD } from "@/lib/graphql/queries/dashboard";
+import SEO from "@/components/common/SEO";
 
 export default function AdminDashboard() {
     const router = useRouter();
@@ -36,6 +37,7 @@ export default function AdminDashboard() {
 
     return (
         <AdminLayout>
+            <SEO title="Dashboard | Chavez Tree Service Admin" description="Admin dashboard" path="/admin" noindex />
             <div className="stack">
             
                 {/* Header */}
