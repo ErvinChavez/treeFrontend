@@ -2,48 +2,21 @@ import { useRouter } from "next/router";
 import { createApolloClient } from "@/lib/apollo";
 import { GET_SERVICES } from "@/lib/graphql/queries/services";
 import { getToken } from "@/utils/auth";
-import Head from "next/head";
+import SEO from "@/components/common/SEO";
+import LocalBusinessSchema from "@/components/common/LocalBusinessSchema";
+import Image from "next/image";
 
 export default function Home({ services }) {
   const router = useRouter();
 
   return (
     <>
-      <Head>
-        <title>
-          Chavez Tree Service | Tree Removal & Trimming in Atlanta, GA
-        </title>
-        
-        <link rel="canonical" href="https://yourdomain.com" />
-
-        <meta
-          name="description"
-          content="Professional tree removal, tree trimming, stump grinding, land clearing, and emergency tree services in Lawrenceville, Gwinnett County, and the Atlanta metropolitan area."
-        />
-
-        <meta
-          name="keywords"
-          content="tree service Atlanta, tree removal Lawrenceville, tree trimming Gwinnett County, stump grinding Atlanta, emergency tree service"
-        />
-
-        <meta property="og:title" content="Chavez Tree Service | Tree Removal & Trimming in Atlanta, GA" />
-
-        <meta
-          property="og:description"
-          content="Professional tree services throughout Metro Atlanta and North Georgia."
-        />
-
-        <meta property="og:image" content="/chavezLogo.png" />
-
-        <meta property="og:url" content="https://chaveztree.com" />
-
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-
-        <meta property="og:type" content="website" />
-
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
+      <SEO
+        title="Chavez Tree Service | Tree Removal & Trimming in Atlanta, GA"
+        description="Professional tree removal, tree trimming, stump grinding, land clearing, and emergency tree services in Lawrenceville, Gwinnett County, and the Atlanta metropolitan area."
+        path="/"
+      />
+      <LocalBusinessSchema />
 
       <div className="min-h-screen flex flex-col">
 
@@ -55,10 +28,13 @@ export default function Home({ services }) {
         
             {/* Logo */}
             <div className="flex justify-center mb-4">
-              <img
+              <Image
                 src="/chavezLogo.png"
                 alt="Chavez Tree Service"
-                className="w-20 h-20 object-contain"
+                width={80}
+                height={80}
+                className="object-contain"
+                priority
               />
             </div>
 

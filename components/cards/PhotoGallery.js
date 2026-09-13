@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function PhotoGallery({ photos }) {
     return (
         <div className="stack-xs">
@@ -5,10 +7,12 @@ export default function PhotoGallery({ photos }) {
 
             <div className="flex gap-2 overflow-x-auto">
                 {photos?.map((url, i) => (
-                    <img
+                    <Image
                         key={i}
                         src={url}
                         alt="Job"
+                        width={96}
+                        height={96}
                         className="h-24 w-24 object-cover rounded-lg border"
                     />
                 ))}

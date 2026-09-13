@@ -7,6 +7,7 @@ import AdminLayout from "@/components/layout/AdminLayout";
 import EmployeeForm from "@/components/forms/EmployeeForm";
 import { GET_EMPLOYEES } from "@/lib/graphql/queries/employees";
 import { CREATE_EMPLOYEE, UPDATE_EMPLOYEE, DELETE_EMPLOYEE, REACTIVATE_EMPLOYEE } from "@/lib/graphql/mutations/employees";
+import SEO from "@/components/common/SEO";
 
 export default function Employees() {
   const router = useRouter();
@@ -88,6 +89,7 @@ export default function Employees() {
 
   return (
     <AdminLayout>
+      <SEO title="Employees | Chavez Tree Service Admin" description="Admin dashboard" path="/admin/employees" noindex />
 
       <div className="stack">
 

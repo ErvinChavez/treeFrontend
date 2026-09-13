@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import FeedbackCard from "@/components/cards/FeedbackCard";
-import Head from "next/head";
+import SEO from "@/components/common/SEO";
 
 //GraphQL query
 const GET_FEEDBACK = gql`
@@ -29,14 +29,11 @@ export default function Testimonials() {
 
   return (
     <>
-      <Head>
-        <title>Customer Reviews & Testimonials | Chavez Tree Service</title>
-
-        <meta
-          name="description"
-          content="Read real customer reviews and testimonials for Chavez Tree Service. Trusted tree removal and trimming services in Atlanta, Lawrenceville, and Gwinnett County."
-        />
-      </Head>
+      <SEO
+        title="Customer Reviews & Testimonials | Chavez Tree Service"
+        description="Read real customer reviews and testimonials for Chavez Tree Service. Trusted tree removal and trimming services in Atlanta, Lawrenceville, and Gwinnett County."
+        path="/testimonials"
+      />
       <div className="section max-w-4xl mx-auto">
         <h1 className="page-title">Customer Testimonials</h1>
 

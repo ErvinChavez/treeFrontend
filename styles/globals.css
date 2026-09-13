@@ -1,8 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
+@theme {
+  --color-brand-dark: #0f1a01;
+  --color-brand-light: #afaa9a;
 
+  --color-brand-wood-primary: #77552f;
+  --color-brand-wood-secondary: #694a30;
+
+  --color-brand-accent: #c74900;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 .app-container {
   @apply max-w-6xl mx-auto px-6;
@@ -18,7 +42,7 @@ body {
   @apply inline-flex items-center justify-center gap-2 
   px-4 py-2 rounded-lg font-medium 
   transition cursor-pointer 
-  focus:outline-none focus:ring-2 focus:ring-brand-dark focus:ring-offset-2
+  focus:outline-hidden focus:ring-2 focus:ring-brand-dark focus:ring-offset-2
   disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
@@ -75,9 +99,9 @@ body {
 }
 
 /* Cards */
-.card {
-  @apply bg-white/80 backdrop-blur border border-brand-wood-secondary/20 
-  rounded-xl shadow-sm p-4 transition-base;
+@utility card {
+  @apply bg-white/80 backdrop-blur-sm border border-brand-wood-secondary/20 
+  rounded-xl shadow-xs p-4 transition-base;
 }
 
 .card-interactive {
@@ -125,7 +149,7 @@ body {
 .input {
   @apply w-full bg-white/80 border border-brand-wood-secondary/20 
   rounded-lg px-3 py-2 text-sm transition-base
-  focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-brand-accent;
+  focus:outline-hidden focus:ring-2 focus:ring-brand-accent focus:border-brand-accent;
 }
 
 /* Labels */
@@ -217,7 +241,7 @@ body {
 }
 
 /* Text */
-.text-body {
+@utility text-body {
   @apply text-sm text-brand-dark;
 }
 
@@ -225,11 +249,11 @@ body {
   @apply text-sm text-gray-700;
 }
 
-.text-caption {
+@utility text-caption {
   @apply text-xs text-gray-500;
 }
 
-.text-title {
+@utility text-title {
   @apply text-lg font-semibold text-brand-dark;
 }
 
@@ -237,7 +261,7 @@ body {
   @apply text-sm font-medium text-brand-dark;
 }
 
-.text-section {
+@utility text-section {
   @apply text-sm font-semibold uppercase tracking-wide text-brand-wood-secondary;
 }
 
@@ -249,6 +273,6 @@ body {
   @apply text-xs text-white/60;
 }
 
-.transition-base {
+@utility transition-base {
   @apply transition-all duration-200 ease-in-out;
 }

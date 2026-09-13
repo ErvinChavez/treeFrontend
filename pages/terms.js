@@ -1,6 +1,13 @@
+import SEO from "@/components/common/SEO";
+
 export default function Terms() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-12">
+      <SEO
+        title="Terms & Conditions | Chavez Tree Service"
+        description="Terms and conditions for using the Chavez Tree Service website and requesting tree service quotes."
+        path="/terms"
+      />
       <h1 className="text-3xl font-bold mb-6">Terms & Conditions</h1>
 
       <p className="mb-4">

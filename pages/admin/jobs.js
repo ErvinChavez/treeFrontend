@@ -5,6 +5,7 @@ import { isAuthenticated } from "@/utils/auth";
 
 import AdminLayout from "@/components/layout/AdminLayout";
 import JobCard from "@/components/cards/JobCard";
+import SEO from "@/components/common/SEO";
 
 import { GET_JOBS } from "@/lib/graphql/queries/jobs";
 import { GET_EMPLOYEES } from "@/lib/graphql/queries/employees";
@@ -187,6 +188,7 @@ export default function Jobs() {
 
   return (
     <AdminLayout>
+      <SEO title="Jobs | Chavez Tree Service Admin" description="Admin dashboard" path="/admin/jobs" noindex />
       <div className="stack">
         {/* Header */}
         <div>
