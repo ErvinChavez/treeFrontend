@@ -1,13 +1,16 @@
 import { useRouter } from "next/router";
 import { createApolloClient } from "@/lib/apollo";
 import { GET_SERVICES } from "@/lib/graphql/queries/services";
+import { GET_FEEDBACK } from "@/lib/graphql/queries/feedback";
 import { getToken } from "@/utils/auth";
 import { getSeasonalHero } from "@/lib/hero";
 import SEO from "@/components/common/SEO";
 import LocalBusinessSchema from "@/components/common/LocalBusinessSchema";
+import ServiceCard from "@/components/cards/ServiceCard";
+import FeedbackCard from "@/components/cards/FeedbackCard";
 import Image from "next/image";
 
-export default function Home({ services }) {
+export default function Home({ services, testimonials }) {
   const router = useRouter();
   const hero = getSeasonalHero();
 
@@ -31,6 +34,7 @@ export default function Home({ services }) {
           role="img"
           aria-label={hero.alt}
         >
+          {/* Dark overlay so white text stays readable over any photo */}
           <div className="absolute inset-0 bg-black/55" />
 
           <div className="relative max-w-4xl mx-auto px-6 text-center text-white">
@@ -91,26 +95,42 @@ export default function Home({ services }) {
             Our Services
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {services.map((service) => (
-              <div key={service.id} className="card card-interactive">
-                <p className="text-subtitle">{service.name}</p>
-                <p className="text-muted mt-1">
-                  {service.description}
-                </p>
-              </div>
+              <ServiceCard key={service.id} service={service} compact />
             ))}
           </div>
         </section>
 
         {/* TRUST / SOCIAL PROOF */}
         <section className="section-card text-center">
-          <h2 className="text-title">
-            Trusted by homeowners throughout Atlanta, Gwinnett County, and North Georgia
-          </h2>
-          <p className="text-muted">
-            We take pride in delivering safe, efficient, and high-quality tree services.
-          </p>
+          {testimonials.length > 0 ? (
+            <>
+              <h2 className="text-title">What Our Customers Say</h2>
+
+              <div className="grid gap-4 md:grid-cols-3 mt-4 text-left">
+                {testimonials.map((feedback, i) => (
+                  <FeedbackCard key={i} feedback={feedback} />
+                ))}
+              </div>
+
+              <button
+                onClick={() => router.push("/testimonials")}
+                className="btn btn-outline mt-6"
+              >
+                Read More Reviews
+              </button>
+            </>
+          ) : (
+            <>
+              <h2 className="text-title">
+                Trusted by homeowners throughout Atlanta, Gwinnett County, and North Georgia
+              </h2>
+              <p className="text-muted">
+                We take pride in delivering safe, efficient, and high-quality tree services.
+              </p>
+            </>
+          )}
         </section>
 
         {/* CTA */}
@@ -135,13 +155,21 @@ export default function Home({ services }) {
 export async function getStaticProps() {
   const client = createApolloClient();
 
-  const { data } = await client.query({
-    query: GET_SERVICES,
-  });
+  const [servicesResult, feedbackResult] = await Promise.all([
+    client.query({ query: GET_SERVICES }),
+    client.query({ query: GET_FEEDBACK }),
+  ]);
+
+  const testimonials = feedbackResult.data.jobs
+    .map((job) => job.feedback)
+    .filter((feedback) => feedback && feedback.rating > 0)
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 3);
 
   return {
     props: {
-      services: data.services,
+      services: servicesResult.data.services,
+      testimonials,
     },
     revalidate: 60,
   };

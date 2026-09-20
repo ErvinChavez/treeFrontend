@@ -120,8 +120,8 @@ export default function QuoteForm({ services }) {
             {/* Client Info */}
             <div className="stack-sm">
                 <input name="clientName" placeholder="Name" value={form.clientName} onChange={handleChange} className="input" required/>
-                <input name="clientEmail" placeholder="Email" value={form.clientEmail} onChange={handleChange} className="input" required/>
-                <input name="clientPhone" placeholder="Phone" value={form.clientPhone} onChange={handleChange} className="input" required/>
+                <input type="email" name="clientEmail" placeholder="Email" value={form.clientEmail} onChange={handleChange} className="input" required/>
+                <input type="tel" inputMode="tel" name="clientPhone" placeholder="Phone" value={form.clientPhone} onChange={handleChange} className="input" required/>
             </div>
 
             {/* Address */}
@@ -129,26 +129,30 @@ export default function QuoteForm({ services }) {
                 <input name="street" placeholder="Street" value={form.street} onChange={handleChange} className="input" required/>
                 <input name="city" placeholder="City" value={form.city} onChange={handleChange} className="input" required/>
                 <input name="state" placeholder="State" value={form.state} onChange={handleChange} className="input" required/>
-                <input name="zip" placeholder="ZIP" value={form.zip} onChange={handleChange} className="input" required/>
+                <input name="zip" inputMode="numeric" placeholder="ZIP" value={form.zip} onChange={handleChange} className="input" required/>
             </div>
-            
+
             {/* Services */}
             <div className="stack-xs">
                 <p className="section-title">Select Services:</p>
 
                 {services.map((service) => (
-                    <label key={service.id} className="flex items-center gap-2 text-body">
+                    <label
+                        key={service.id}
+                        className="flex items-center gap-3 min-h-11 px-3 py-2 rounded-lg border border-brand-wood-secondary/20 transition-base hover:bg-brand-light/40 cursor-pointer"
+                    >
                         <input
                         type="checkbox"
                         checked={form.serviceIds.includes(Number(service.id))}
                         onChange={() => handleServiceChange(service.id)}
+                        className="w-5 h-5 shrink-0 accent-brand-accent"
                         />
-                        {service.name}
+                        <span className="text-body">{service.name}</span>
                     </label>
                 ))}
             </div>
 
-            <button type="submit" disabled={loading} className={`btn btn-primary ${loading ? "opacity-50 cursor-not-allowed" : ""}`}>
+            <button type="submit" disabled={loading} className={`btn btn-primary w-full ${loading ? "opacity-50 cursor-not-allowed" : ""}`}>
                 {loading ? "Submitting..." : " Submit Request"}
             </button>
         </form>

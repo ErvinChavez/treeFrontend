@@ -1,20 +1,7 @@
-import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import FeedbackCard from "@/components/cards/FeedbackCard";
 import SEO from "@/components/common/SEO";
-
-//GraphQL query
-const GET_FEEDBACK = gql`
-  query {
-    jobs {
-      id
-      feedback {
-        rating
-        comment
-      }
-    }
-  }
-`;
+import { GET_FEEDBACK } from "@/lib/graphql/queries/feedback";
 
 export default function Testimonials() {
   const { data, loading, error } = useQuery(GET_FEEDBACK);
