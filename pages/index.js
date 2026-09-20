@@ -26,16 +26,11 @@ export default function Home({ services }) {
         <section
           className="relative py-20 md:py-32 bg-cover bg-center"
           style={{
-            // Layered CSS backgrounds: the seasonal photo sits on top of a
-            // brand-colored gradient. If the photo file doesn't exist yet
-            // (see lib/hero.js), that layer is simply transparent and the
-            // gradient underneath shows through cleanly — no broken image.
             backgroundImage: `url(${hero.image}), linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-wood-primary))`,
           }}
           role="img"
           aria-label={hero.alt}
         >
-          {/* Dark overlay so white text stays readable over any photo */}
           <div className="absolute inset-0 bg-black/55" />
 
           <div className="relative max-w-4xl mx-auto px-6 text-center text-white">
