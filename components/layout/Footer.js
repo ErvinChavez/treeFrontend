@@ -29,6 +29,9 @@ export default function Footer() {
             <a href="/services" className="hover:text-brand-accent transition-base">
               Services
             </a>
+            <a href="/gallery" className="hover:text-brand-accent transition-base">
+              Our Work
+            </a>
             <a href="/quote" className="hover:text-brand-accent transition-base">
               Get a Quote
             </a>

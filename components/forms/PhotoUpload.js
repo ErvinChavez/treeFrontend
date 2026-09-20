@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from 'axios';
 
 export default function PhotoUpload({ jobId, onUpload }) {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const fileInputRef = useRef(null);
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -46,7 +47,30 @@ export default function PhotoUpload({ jobId, onUpload }) {
 
     return (
         <div className="stack-xs">
-            <input type="file" accept="image/*" onChange={handleFileChange} className="text-sm"/>
+            {/* Native file inputs render with the browser's own unstyled widget, so it's
+                hidden (not display:none, which breaks keyboard/click handling in some
+                browsers) and triggered via the ref from a styled label that looks like
+                our other buttons instead. */}
+            <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                ref={fileInputRef}
+                className="sr-only"
+            />
+
+            <div className="flex items-center gap-3">
+                <label
+                    onClick={() => fileInputRef.current?.click()}
+                    className="btn btn-outline btn-sm cursor-pointer"
+                >
+                    Choose File
+                </label>
+
+                <span className="text-sm text-brand-dark/70">
+                    {file ? file.name : 'No file selected'}
+                </span>
+            </div>
 
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
@@ -60,4 +84,3 @@ export default function PhotoUpload({ jobId, onUpload }) {
         </div>
     );
 }
-

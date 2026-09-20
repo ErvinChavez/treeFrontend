@@ -2,12 +2,14 @@ import { useRouter } from "next/router";
 import { createApolloClient } from "@/lib/apollo";
 import { GET_SERVICES } from "@/lib/graphql/queries/services";
 import { getToken } from "@/utils/auth";
+import { getSeasonalHero } from "@/lib/hero";
 import SEO from "@/components/common/SEO";
 import LocalBusinessSchema from "@/components/common/LocalBusinessSchema";
 import Image from "next/image";
 
 export default function Home({ services }) {
   const router = useRouter();
+  const hero = getSeasonalHero();
 
   return (
     <>
@@ -21,11 +23,18 @@ export default function Home({ services }) {
       <div className="min-h-screen flex flex-col">
 
         {/* HERO */}
-        <section className="py-12">
-          <div className="max-w-4xl mx-auto px-6">
-          
-            <div className="card p-8 text-center">
-        
+        <section
+          className="relative py-20 md:py-32 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${hero.image}), linear-gradient(135deg, var(--color-brand-dark), var(--color-brand-wood-primary))`,
+          }}
+          role="img"
+          aria-label={hero.alt}
+        >
+          <div className="absolute inset-0 bg-black/55" />
+
+          <div className="relative max-w-4xl mx-auto px-6 text-center text-white">
+
             {/* Logo */}
             <div className="flex justify-center mb-4">
               <Image
@@ -33,25 +42,25 @@ export default function Home({ services }) {
                 alt="Chavez Tree Service"
                 width={80}
                 height={80}
-                className="object-contain"
+                className="object-contain bg-white rounded-full p-1"
                 priority
               />
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl font-bold text-brand-dark">
+            <h1 className="text-4xl md:text-5xl font-bold drop-shadow-sm">
               Chavez Tree Service
             </h1>
 
-            <h2 className="text-xl font-semibold text-gray-700 mt-2">
+            <h2 className="text-xl font-semibold text-white/90 mt-2">
               Professional Tree Removal, Tree Trimming & Emergency Tree Services in Atlanta, GA
             </h2>
 
-            <p className="text-sm font-medium text-brand-dark mt-3">
+            <p className="text-sm font-medium text-white/90 mt-3">
               Licensed & Insured • Serving Metro Atlanta Since 1998
             </p>
 
-            <p className="text-muted max-w-xl mx-auto mt-3">
+            <p className="text-white/80 max-w-xl mx-auto mt-3">
               Chavez Tree Service provides professional tree removal, tree trimming,
               stump grinding, land clearing, and emergency tree services throughout
               Lawrenceville, Gwinnett County, and the greater Atlanta metropolitan area.
@@ -61,20 +70,19 @@ export default function Home({ services }) {
             <div className="flex gap-3 flex-wrap justify-center mt-6">
               <button
                 onClick={() => router.push("/quote")}
-                className="btn btn-primary"
+                className="btn btn-accent"
               >
                 Request a Quote
               </button>
 
               <button
                 onClick={() => router.push(getToken() ? "/admin" : "/admin/login")}
-                className="btn btn-outline"
+                className="btn btn-outline border-white text-white hover:bg-white hover:text-brand-dark"
               >
                 Staff Sign In
               </button>
             </div>
           </div>
-        </div>
         </section>
 
         {/* SERVICES */}
