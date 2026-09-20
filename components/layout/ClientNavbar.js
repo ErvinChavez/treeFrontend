@@ -25,6 +25,9 @@ export default function ClientNavbar() {
           <Link href="/services" className="hover:text-brand-dark transition">
             Services
           </Link>
+          <Link href="/gallery" className="hover:text-brand-dark transition">
+            Our Work
+          </Link>
           <Link href="/quote" className="hover:text-brand-dark transition">
             Get a Quote
           </Link>
