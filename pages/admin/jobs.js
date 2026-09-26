@@ -5,16 +5,21 @@ import { isAuthenticated } from "@/utils/auth";
 
 import AdminLayout from "@/components/layout/AdminLayout";
 import JobCard from "@/components/cards/JobCard";
+import AddJobForm from "@/components/forms/AddJobForm";
 import SEO from "@/components/common/SEO";
 
 import { GET_JOBS } from "@/lib/graphql/queries/jobs";
 import { GET_EMPLOYEES } from "@/lib/graphql/queries/employees";
-import { SEND_REVIEW_REQUEST } from "@/lib/graphql/mutations/reviews";
+import { GET_SERVICES } from "@/lib/graphql/queries/services";
 import {
   UPDATE_JOB_STATUS,
   ASSIGN_EMPLOYEES,
   SUBMIT_FEEDBACK,
   UPDATE_JOB_TOTAL_AMOUNT,
+  SEND_RECEIPT_EMAIL,
+  RECORD_PAYMENT,
+  CREATE_JOB,
+  SEND_QUOTE_EMAIL,
 } from "@/lib/graphql/mutations/jobs";
 
 export default function Jobs() {
@@ -41,22 +46,13 @@ export default function Jobs() {
     skip: !checkedAuth,
   });
 
+  const { data: serviceData } = useQuery(GET_SERVICES, {
+    skip: !checkedAuth,
+  });
+
   //local State
   const [selectedEmployees, setSelectedEmployees] = useState({});
-
-  const [sendReviewRequest] = useMutation(SEND_REVIEW_REQUEST, {
-    onCompleted: (data) => {
-      if (data.sendReviewRequest) {
-        console.log("Review request sent successfully!");
-        refetch();
-      } else {
-        console.warn("Review request was already sent or failed.");
-      }
-    },
-    onError: (err) => {
-      console.error("Error sending review request:", err);
-    },
-  });
+  const [showAddJob, setShowAddJob] = useState(false);
 
   const [updateStatus] = useMutation(UPDATE_JOB_STATUS, {
     onCompleted: (res) => {
@@ -126,6 +122,25 @@ export default function Jobs() {
     },
   });
 
+  const [sendReceiptEmail] = useMutation(SEND_RECEIPT_EMAIL, {
+    onCompleted: () => refetch(),
+    onError: () => refetch(),
+  });
+
+  //admin: email a client a pre-work estimate (word-of-mouth quotes)
+  const [sendQuoteEmail] = useMutation(SEND_QUOTE_EMAIL, {
+    onCompleted: () => refetch(),
+    onError: () => refetch(),
+  });
+
+  const [recordPayment] = useMutation(RECORD_PAYMENT, {
+    onCompleted: () => refetch(),
+  });
+
+  const [createJob, { loading: creatingJob }] = useMutation(CREATE_JOB, {
+    onCompleted: () => refetch(),
+  });
+
   const [assignEmployees] = useMutation(ASSIGN_EMPLOYEES, {
     update(cache, { data }) {},
   });
@@ -191,10 +206,33 @@ export default function Jobs() {
       <SEO title="Jobs | Chavez Tree Service Admin" description="Admin dashboard" path="/admin/jobs" noindex />
       <div className="stack">
         {/* Header */}
-        <div>
-          <h1 className="page-title">Jobs</h1>
-          <p className="text-muted">Track and manage all jobs</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="page-title">Jobs</h1>
+            <p className="text-muted">Track and manage all jobs</p>
+          </div>
+
+          {!showAddJob && (
+            <button
+              type="button"
+              onClick={() => setShowAddJob(true)}
+              className="btn btn-primary"
+            >
+              + Add Job
+            </button>
+          )}
         </div>
+
+        {showAddJob && (
+          <AddJobForm
+            services={serviceData?.services || []}
+            createJob={createJob}
+            sendQuoteEmail={sendQuoteEmail}
+            loading={creatingJob}
+            onDone={() => setShowAddJob(false)}
+            onCancel={() => setShowAddJob(false)}
+          />
+        )}
 
         {/* Job Groups */}
         {Object.entries(groupedJobs).map(([status, jobs]) => {
@@ -219,7 +257,9 @@ export default function Jobs() {
                     job={job}
                     updateStatus={updateStatus}
                     updateJobTotalAmount={updateJobTotalAmount}
-                    sendReviewRequest={sendReviewRequest}
+                    sendReceiptEmail={sendReceiptEmail}
+                    sendQuoteEmail={sendQuoteEmail}
+                    recordPayment={recordPayment}
                     submitFeedback={submitFeedback}
                     assignEmployees={assignEmployees}
                     empData={empData}
